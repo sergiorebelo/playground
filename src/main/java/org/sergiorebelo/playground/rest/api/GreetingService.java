@@ -15,12 +15,12 @@ public class GreetingService {
 
 
     public String greeting(String name) {
-        String gender = nameInformationService.getGender(name);
+        String gender = nameInformationService.getGender(name).getDisplayName();
         return "Hello " + name + ". Do you identify as " + Optional.ofNullable(gender).orElse("non binary") + "?";
     }
 
     private String getGender(String name) {
-        return nameInformationService.getGender(name);
+        return nameInformationService.getGender(name).getDisplayName();
     }
 
 }

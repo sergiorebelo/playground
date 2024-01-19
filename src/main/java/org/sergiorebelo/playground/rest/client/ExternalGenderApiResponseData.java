@@ -2,9 +2,7 @@ package org.sergiorebelo.playground.rest.client;
 
 public class ExternalGenderApiResponseData {
     private int count;
-
     private String name;
-
     private String gender;
     private float probability;
 
@@ -15,7 +13,6 @@ public class ExternalGenderApiResponseData {
     public String getGender() {
         return gender;
     }
-
 
 
     // Optionally, override toString(), equals(), and hashCode() methods
