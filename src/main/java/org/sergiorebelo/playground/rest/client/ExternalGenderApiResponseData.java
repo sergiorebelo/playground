@@ -1,6 +1,6 @@
 package org.sergiorebelo.playground.rest.client;
 
-public class ResponseData {
+public class ExternalGenderApiResponseData {
     private int count;
 
     private String name;
