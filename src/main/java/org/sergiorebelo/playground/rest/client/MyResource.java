@@ -12,13 +12,13 @@ public class MyResource {
 
     @Inject
     @RestClient
-    ExternalApiService externalApiService;
+    ExternalGenderApiService externalGenderApiService;
 
     @GET
     @Path("/call-api/{name}")
     public ResponseData callExternalService(@PathParam("name") String name) {
 
-        return externalApiService.getResource(name);
+        return externalGenderApiService.getResource(name);
     }
 }
 

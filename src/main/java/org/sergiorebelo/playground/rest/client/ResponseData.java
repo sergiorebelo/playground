@@ -11,37 +11,11 @@ public class ResponseData {
 
     // Getters and setters for each field
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public float getProbability() {
-        return probability;
-    }
-
-    public void setProbability(float probability) {
-        this.probability = probability;
-    }
 
 
     // Optionally, override toString(), equals(), and hashCode() methods

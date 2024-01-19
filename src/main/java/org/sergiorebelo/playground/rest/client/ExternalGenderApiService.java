@@ -8,8 +8,8 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("")//("/api")
-@RegisterRestClient(configKey = "external-api")
-public interface ExternalApiService {
+@RegisterRestClient(configKey = "external-gender-api")
+public interface ExternalGenderApiService {
 
     @GET
     @Path("")//""/resource")
