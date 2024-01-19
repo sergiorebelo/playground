@@ -2,6 +2,7 @@ package org.sergiorebelo.playground.rest.api;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.sergiorebelo.playground.GenderInformationFacade;
 import org.sergiorebelo.playground.NameInformationService;
 
 import java.util.Optional;
@@ -15,8 +16,8 @@ public class GreetingService {
 
 
     public String greeting(String name) {
-        String gender = nameInformationService.getGender(name).getDisplayName();
-        return "Hello " + name + ". Do you identify as " + Optional.ofNullable(gender).orElse("non binary") + "?";
+        GenderInformationFacade.Gender gender = nameInformationService.getGender(name);
+        return "Hello " + name + ". Do you identify as " + Optional.ofNullable(gender.getDisplayName()).orElse("non binary") + "?";
     }
 
     private String getGender(String name) {
