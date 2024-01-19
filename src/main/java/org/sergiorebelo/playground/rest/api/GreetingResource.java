@@ -1,4 +1,4 @@
-package org.sergiorebelo.playground;
+package org.sergiorebelo.playground.rest.api;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -12,10 +12,12 @@ public class GreetingResource {
     @Inject
     GreetingService service;
 
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/{name}")
     public String hello(String name) {
+
         return service.greeting(name);
     }
 
@@ -23,7 +25,7 @@ public class GreetingResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String hello() {
-        return "Hello from the other side";
+        return "Hello stranger";
     }
 
 }

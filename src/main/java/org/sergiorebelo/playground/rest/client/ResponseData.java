@@ -1,26 +1,22 @@
 package org.sergiorebelo.playground.rest.client;
 
-//      {
-//        "id": 123,
-//        "name": "Example Name",
-//        "status": "Active"
-//        }
-
-
 public class ResponseData {
+    private int count;
 
-    private int id;
     private String name;
-    private String status;
+
+    private String gender;
+    private float probability;
+
 
     // Getters and setters for each field
 
-    public int getId() {
-        return id;
+    public int getCount() {
+        return count;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public String getName() {
@@ -31,15 +27,33 @@ public class ResponseData {
         this.name = name;
     }
 
-    public String getStatus() {
-        return status;
+    public String getGender() {
+        return gender;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
+
+    public float getProbability() {
+        return probability;
+    }
+
+    public void setProbability(float probability) {
+        this.probability = probability;
+    }
+
 
     // Optionally, override toString(), equals(), and hashCode() methods
 
 
+    @Override
+    public String toString() {
+        return "ResponseData{" +
+                "count=" + count +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", probability=" + probability +
+                '}';
+    }
 }
