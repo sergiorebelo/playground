@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playground - Ferramentas Interativas</title>
+    <title>Playground - laboratório experimental do Sérgio Rebelo.</title>
     <style>
         :root {
             --primary: #4361ee;
@@ -122,22 +122,22 @@
             font-size: 1.8rem;
         }
         
-        .icon-ats {
+        .icon-blue {
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
         }
-        
-        .icon-color {
+
+        .icon-pink {
             background: linear-gradient(135deg, var(--warning), #ff6b6b);
             color: white;
         }
         
-        .icon-text {
+        .icon-green {
             background: linear-gradient(135deg, var(--success), #52b788);
             color: white;
         }
         
-        .icon-calc {
+        .icon-purple {
             background: linear-gradient(135deg, var(--secondary), #9d4edd);
             color: white;
         }
@@ -195,7 +195,6 @@
             font-weight: 600;
             transition: all 0.3s;
             border: none;
-            cursor: pointer;
         }
         
         .btn:hover {
@@ -237,6 +236,7 @@
             font-size: 0.8rem;
             font-weight: bold;
         }
+
         
         .footer {
             text-align: center;
@@ -265,20 +265,20 @@
 <body>
     <div class="container">
         <header>
-            <h1>Playground</h1>
-            <p class="subtitle">Uma coleção de ferramentas interativas e úteis para desenvolvedores, designers e entusiastas de tecnologia.</p>
-            <p class="tagline">Explore, experimente e divirta-se!</p>
+            <h1>Playground do Sérgio</h1>
+            <p class="subtitle">Uma coleção de experiências, apps e ferramentas interativas.</p>
+            <p class="tagline">Explora, usa, experimenta e divirte-te!</p>
         </header>
         
         <div class="tools-grid">
             <!-- Gerador de Queries ATS -->
             <div class="tool-card">
                 <div class="card-header">
-                    <div class="card-icon icon-ats">
+                    <div class="card-icon">
                         <i>🔍</i>
                     </div>
                     <h2 class="card-title">Gerador de Queries ATS</h2>
-                    <p class="card-description">Crie pesquisas avançadas no Google para encontrar vagas em plataformas de recrutamento.</p>
+                    <p class="card-description">Cria pesquisas avançadas no Google para encontrar vagas de emprego em plataformas de recrutamento.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
@@ -293,30 +293,30 @@
                 </div>
             </div>
             
-            <!-- Gerador de Paleta de Cores -->
-            <div class="tool-card">
+            <!-- Agenda de Eventos Tech -->
+            <div class="tool-card coming-soon">
                 <div class="card-header">
-                    <div class="card-icon icon-color">
-                        <i>🎨</i>
+                    <div class="card-icon">
+                        <i>📅</i>
                     </div>
-                    <h2 class="card-title">Gerador de Paleta de Cores</h2>
-                    <p class="card-description">Crie, explore e exporte paletas de cores harmoniosas para seus projetos.</p>
+                    <h2 class="card-title">Agenda de Eventos Tech</h2>
+                    <p class="card-description">Encontra os melhores eventos Tech. </p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Geração de paletas complementares</li>
-                        <li>Análise de contraste e acessibilidade</li>
-                        <li>Exportação em múltiplos formatos</li>
-                        <li>Biblioteca de paletas populares</li>
+                        <li>Conferências, Meetups, Hackatons e mais</li>
+                        <li>Pesquisa por data, localização e preço</li>
+                        <li>Curadoria com seleção de eventos mais relevantes</li>
+                        <li>Mais notícias em breve... </li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-secondary">Abrir Ferramenta</a>
+                    <a class="btn"  style="background: var(--gray);">Em construção</a>
                 </div>
             </div>
             
             <!-- Analisador de Texto -->
-            <div class="tool-card">
+            <div class="tool-card coming-soon">
                 <div class="card-header">
                     <div class="card-icon icon-text">
                         <i>📊</i>
@@ -333,7 +333,7 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-accent">Abrir Ferramenta</a>
+                    <a class="btn" style="background: var(--gray);">Em Breve</a>
                 </div>
             </div>
             
@@ -341,21 +341,21 @@
             <div class="tool-card coming-soon">
                 <div class="card-header">
                     <div class="card-icon icon-calc">
-                        <i>⏱️</i>
+                        <i>🎨</i>
                     </div>
-                    <h2 class="card-title">Calculadora de Tempo de Dev</h2>
-                    <p class="card-description">Estime prazos de desenvolvimento baseado em complexidade e recursos.</p>
+                    <h2 class="card-title">Gerador de Paleta de Cores</h2>
+                    <p class="card-description">Cria, explora, experimenta e exporta paletas de cores para os teus projetos.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Estimativas baseadas em complexidade</li>
-                        <li>Cálculo de custos de projeto</li>
-                        <li>Análise de riscos e dependências</li>
-                        <li>Relatórios detalhados de estimativas</li>
+                        <li>Geração de paletas complementares</li>
+                        <li>Análise de Contraste e Acessibilidade</li>
+                        <li>Exportação em múltiplos formatos</li>
+                        <li>Biblioteca de paletas populares</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
+                    <a class="btn" style="background: var(--gray);">Em Breve</a>
                 </div>
             </div>
             
@@ -366,7 +366,7 @@
                         <i>📐</i>
                     </div>
                     <h2 class="card-title">Conversor de Unidades CSS</h2>
-                    <p class="card-description">Converta entre diferentes unidades de medida CSS de forma rápida.</p>
+                    <p class="card-description">Converte entre diferentes unidades de medida CSS de forma rápida.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
@@ -377,7 +377,7 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
+                    <a class="btn" style="background: var(--gray);">Em Breve</a>
                 </div>
             </div>
             
@@ -388,7 +388,7 @@
                         <i>{} </i>
                     </div>
                     <h2 class="card-title">Validador e Formatador JSON</h2>
-                    <p class="card-description">Valide, formate e analise estruturas de dados JSON.</p>
+                    <p class="card-description">Valida, formata e analisa estruturas de dados JSON.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
@@ -399,14 +399,34 @@
                     </ul>
                 </div>
                 <div class="card-footer">
+                    <a class="btn" style="background: var(--gray);">Em Breve</a>
+                </div>
+            </div>
+
+            <!-- API Request Builder-->
+            <div class="tool-card coming-soon">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i>🌐</i>
+                    </div>
+                    <h2 class="card-title">API Request Builder</h2>
+                    <p class="card-description">Cliente HTTP para testar APIs.</p>
+                </div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Suporte a interfaces REST</li>
+                        <li>Privacidade de dados</li>
+                        <li>Histórico local</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
                     <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>Playground Tools • Criado com ❤️ para a comunidade de desenvolvedores</p>
-            <p>Contribua no <a href="#" style="color: var(--primary);">GitHub</a> | Sugira uma ferramenta</p>
+            <p>Criado com ❤️ por <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
         </div>
     </div>
 
