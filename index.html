@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tech Playground 3D</title>
+    <title>Playground - Ferramentas Interativas</title>
     <style>
         :root {
             --primary: #4361ee;
@@ -12,10 +12,12 @@
             --accent: #4cc9f0;
             --success: #38b000;
             --warning: #f72585;
-            --playground-green: #52b788;
-            --playground-yellow: #ffd166;
-            --playground-red: #ef476f;
-            --playground-blue: #118ab2;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border: #dee2e6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --card-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
         }
         
         * {
@@ -26,521 +28,424 @@
         }
         
         body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            color: white;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: var(--dark);
+            line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 5s infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
-            z-index: 1;
         }
         
         header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             padding: 40px 20px;
-            position: relative;
-        }
-        
-        .title-3d {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            background: linear-gradient(45deg, var(--accent), var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .title-3d::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 10%;
-            width: 80%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            border-radius: 2px;
-        }
-        
-        .subtitle {
-            font-size: 1.4rem;
-            color: #a0a0c0;
-            max-width: 600px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
-        }
-        
-        .playground-area {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 40px;
-            min-height: 600px;
-            margin-bottom: 60px;
-        }
-        
-        .playground-scene {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
             position: relative;
             overflow: hidden;
         }
         
-        .scene-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            text-align: center;
-            color: var(--accent);
-        }
-        
-        .tool-object {
-            width: 200px;
-            height: 200px;
-            margin: 40px auto;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-            cursor: pointer;
-        }
-        
-        .tool-object:hover {
-            transform: rotateY(15deg) rotateX(10deg) scale(1.05);
-        }
-        
-        .cube {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotate 20s infinite linear;
-        }
-        
-        .face {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .front { transform: translateZ(100px); background: linear-gradient(45deg, var(--primary), #3a56d4); }
-        .back { transform: rotateY(180deg) translateZ(100px); background: linear-gradient(45deg, var(--primary-dark), #2d46b8); }
-        .right { transform: rotateY(90deg) translateZ(100px); background: linear-gradient(45deg, #3a56d4, #2d46b8); }
-        .left { transform: rotateY(-90deg) translateZ(100px); background: linear-gradient(45deg, #2d46b8, #1e3a8a); }
-        .top { transform: rotateX(90deg) translateZ(100px); background: linear-gradient(45deg, #4cc9f0, #3ab0d5); }
-        .bottom { transform: rotateX(-90deg) translateZ(100px); background: linear-gradient(45deg, #3ab0d5, #2a9bbf); }
-        
-        @keyframes rotate {
-            0% { transform: rotateX(0) rotateY(0); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-        }
-        
-        .coming-soon-objects {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 60px;
-        }
-        
-        .coming-soon {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            opacity: 0.5;
-            transform-style: preserve-3d;
-            transform: rotateX(15deg);
-            transition: all 0.3s ease;
-        }
-        
-        .coming-soon:hover {
-            opacity: 0.8;
-            transform: rotateX(15deg) translateY(-10px);
-        }
-        
-        .tool-info {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .tool-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        
-        .tool-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-right: 20px;
-        }
-        
-        .tool-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--accent), white);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .tool-description {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #c0c0e0;
-            margin-bottom: 30px;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid var(--accent);
-        }
-        
-        .feature-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-        
-        .btn-3d {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: none;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-3d::before {
+        header::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
         }
         
-        .btn-3d:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        h1 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 3rem;
+            font-weight: 800;
         }
         
-        .btn-3d:hover::before {
-            left: 100%;
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 25px;
         }
         
-        .upcoming-section {
-            margin-top: 80px;
-            text-align: center;
+        .tagline {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
         
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: var(--accent);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 20%;
-            width: 60%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            border-radius: 2px;
-        }
-        
-        .upcoming-grid {
+        .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
+            margin-bottom: 50px;
         }
         
-        .upcoming-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s ease;
+        .tool-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
-        .upcoming-card:hover {
-            transform: translateY(-10px);
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
         }
         
-        .upcoming-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.1);
+        .card-header {
+            padding: 25px 25px 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 15px;
             font-size: 1.8rem;
-            margin: 0 auto 20px;
         }
         
-        .upcoming-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 15px;
+        .icon-ats {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
         }
         
-        .upcoming-description {
-            color: #a0a0c0;
-            line-height: 1.6;
+        .icon-color {
+            background: linear-gradient(135deg, var(--warning), #ff6b6b);
+            color: white;
+        }
+        
+        .icon-text {
+            background: linear-gradient(135deg, var(--success), #52b788);
+            color: white;
+        }
+        
+        .icon-calc {
+            background: linear-gradient(135deg, var(--secondary), #9d4edd);
+            color: white;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .card-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .card-body {
+            padding: 20px 25px;
+            flex-grow: 1;
+        }
+        
+        .card-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .card-features li {
+            padding: 6px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .card-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .card-footer {
+            padding: 0 25px 25px;
+            margin-top: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #5a08a0;
+        }
+        
+        .btn-accent {
+            background: var(--accent);
+        }
+        
+        .btn-accent:hover {
+            background: #3ab0d5;
+        }
+        
+        .coming-soon {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .coming-soon::after {
+            content: 'EM BREVE';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--warning);
+            color: white;
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
         }
         
         .footer {
             text-align: center;
-            padding: 40px 20px;
-            margin-top: 80px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0a0c0;
+            padding: 30px 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
         }
         
-        @media (max-width: 968px) {
-            .playground-area {
+        @media (max-width: 768px) {
+            .tools-grid {
                 grid-template-columns: 1fr;
             }
             
-            .title-3d {
-                font-size: 2.5rem;
+            h1 {
+                font-size: 2.2rem;
             }
             
-            .features-grid {
-                grid-template-columns: 1fr;
+            .subtitle {
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-    
     <div class="container">
         <header>
-            <h1 class="title-3d">Sérgio's Playground</h1>
-            <p class="subtitle">Um espaço onde ideias ganham vida através de ferramentas interativas, jogos e experiências únicas</p>
+            <h1>Playground</h1>
+            <p class="subtitle">Uma coleção de ferramentas interativas e úteis para desenvolvedores, designers e entusiastas de tecnologia.</p>
+            <p class="tagline">Explore, experimente e divirta-se!</p>
         </header>
         
-        <div class="playground-area">
-            <div class="playground-scene">
-                <h2 class="scene-title">Área de Ferramentas</h2>
-                
-                <div class="tool-object" onclick="window.location.href='job-search/ATS-query-generator.html'">
-                    <div class="cube">
-                        <div class="face front">🔍</div>
-                        <div class="face back">ATS</div>
-                        <div class="face right">Query</div>
-                        <div class="face left">Tech</div>
-                        <div class="face top">Jobs</div>
-                        <div class="face bottom">Search</div>
+        <div class="tools-grid">
+            <!-- Gerador de Queries ATS -->
+            <div class="tool-card">
+                <div class="card-header">
+                    <div class="card-icon icon-ats">
+                        <i>🔍</i>
                     </div>
+                    <h2 class="card-title">Gerador de Queries ATS</h2>
+                    <p class="card-description">Crie pesquisas avançadas no Google para encontrar vagas em plataformas de recrutamento.</p>
                 </div>
-                
-                <div class="coming-soon-objects">
-                    <div class="coming-soon">📅</div>
-                    <div class="coming-soon">🎮</div>
-                    <div class="coming-soon">🎨</div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Pesquisa em 20+ plataformas ATS</li>
+                        <li>Filtros por localização e tipo de trabalho</li>
+                        <li>Queries específicas para cada plataforma</li>
+                        <li>Interface intuitiva e personalizável</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="ats-query-generator.html" class="btn">Abrir Ferramenta</a>
                 </div>
             </div>
             
-            <div class="tool-info">
-                <div class="tool-header">
-                    <div class="tool-icon">🔍</div>
-                    <div>
-                        <h2 class="tool-title">Gerador de Queries ATS</h2>
-                        <p>Ferramenta Ativa</p>
+            <!-- Gerador de Paleta de Cores -->
+            <div class="tool-card">
+                <div class="card-header">
+                    <div class="card-icon icon-color">
+                        <i>🎨</i>
                     </div>
+                    <h2 class="card-title">Gerador de Paleta de Cores</h2>
+                    <p class="card-description">Crie, explore e exporte paletas de cores harmoniosas para seus projetos.</p>
                 </div>
-                
-                <p class="tool-description">
-                    Crie pesquisas avançadas no Google para encontrar vagas de tecnologia em mais de 20 plataformas 
-                    de recrutamento diferentes. Perfeito para quem está à procura de novos desafios e quer ir além do LinkedIn.
-                </p>
-                
-                <div class="features-grid">
-                    <div class="feature">
-                        <h3 class="feature-title">Pesquisa Inteligente</h3>
-                        <p>Queries específicas para cada plataforma ATS</p>
-                    </div>
-                    <div class="feature">
-                        <h3 class="feature-title">Filtros Avançados</h3>
-                        <p>Localização, tipo de trabalho e recência</p>
-                    </div>
-                    <div class="feature">
-                        <h3 class="feature-title">+20 Plataformas</h3>
-                        <p>Greenhouse, Lever, Workable e muitas outras</p>
-                    </div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Geração de paletas complementares</li>
+                        <li>Análise de contraste e acessibilidade</li>
+                        <li>Exportação em múltiplos formatos</li>
+                        <li>Biblioteca de paletas populares</li>
+                    </ul>
                 </div>
-                
-                <a href="/job-search/ATS-query-generator.html" class="btn-3d">Explorar Ferramenta 🔍</a>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-secondary">Abrir Ferramenta</a>
+                </div>
             </div>
-        </div>
-        
-        <div class="upcoming-section">
-            <h2 class="section-title">Em Desenvolvimento</h2>
             
-            <div class="upcoming-grid">
-                <div class="upcoming-card">
-                    <div class="upcoming-icon">📅</div>
-                    <h3 class="upcoming-title">Agenda Tech Portugal</h3>
-                    <p class="upcoming-description">
-                        Um calendário interativo e curado com eventos de tecnologia em Portugal. 
-                        Meetups, conferências, workshops e hackathons num só lugar.
-                    </p>
+            <!-- Analisador de Texto -->
+            <div class="tool-card">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i>📊</i>
+                    </div>
+                    <h2 class="card-title">Analisador de Texto</h2>
+                    <p class="card-description">Analise textos para estatísticas, legibilidade e otimização para SEO.</p>
                 </div>
-                
-                <div class="upcoming-card">
-                    <div class="upcoming-icon">🎮</div>
-                    <h3 class="upcoming-title">Jogo de Paródia</h3>
-                    <p class="upcoming-description">
-                        Uma aventura interativa baseada num livro muito especial.
-                    </p>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Contagem de palavras e caracteres</li>
+                        <li>Análise de densidade de palavras-chave</li>
+                        <li>Pontuação de legibilidade</li>
+                        <li>Recomendações de melhoria</li>
+                    </ul>
                 </div>
-                
-                <div class="upcoming-card">
-                    <div class="upcoming-icon">🎨</div>
-                    <h3 class="upcoming-title">Studio Criativo</h3>
-                    <p class="upcoming-description">
-                        Ferramentas criativas para designers: gerador de paletas, 
-                        criador de gradientes ou editor de SVG online.
-                    </p>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-accent">Abrir Ferramenta</a>
+                </div>
+            </div>
+            
+            <!-- Calculadora de Tempo de Desenvolvimento -->
+            <div class="tool-card coming-soon">
+                <div class="card-header">
+                    <div class="card-icon icon-calc">
+                        <i>⏱️</i>
+                    </div>
+                    <h2 class="card-title">Calculadora de Tempo de Dev</h2>
+                    <p class="card-description">Estime prazos de desenvolvimento baseado em complexidade e recursos.</p>
+                </div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Estimativas baseadas em complexidade</li>
+                        <li>Cálculo de custos de projeto</li>
+                        <li>Análise de riscos e dependências</li>
+                        <li>Relatórios detalhados de estimativas</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
+                </div>
+            </div>
+            
+            <!-- Conversor de Unidades CSS -->
+            <div class="tool-card coming-soon">
+                <div class="card-header">
+                    <div class="card-icon icon-calc">
+                        <i>📐</i>
+                    </div>
+                    <h2 class="card-title">Conversor de Unidades CSS</h2>
+                    <p class="card-description">Converta entre diferentes unidades de medida CSS de forma rápida.</p>
+                </div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Conversão entre px, rem, em, %</li>
+                        <li>Cálculo baseado em contexto</li>
+                        <li>Visualização em tempo real</li>
+                        <li>Presets para sistemas de design</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
+                </div>
+            </div>
+            
+            <!-- Validador de JSON -->
+            <div class="tool-card coming-soon">
+                <div class="card-header">
+                    <div class="card-icon icon-text">
+                        <i>{} </i>
+                    </div>
+                    <h2 class="card-title">Validador e Formatador JSON</h2>
+                    <p class="card-description">Valide, formate e analise estruturas de dados JSON.</p>
+                </div>
+                <div class="card-body">
+                    <ul class="card-features">
+                        <li>Validação de sintaxe JSON</li>
+                        <li>Formatação e minificação</li>
+                        <li>Análise de estrutura de dados</li>
+                        <li>Conversão para outros formatos</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
                 </div>
             </div>
         </div>
         
         <div class="footer">
-            <p>🚀 Sérgio's Playground - Onde as ideias ganham vida • 2025</p>
-            <p>Desenvolvido com paixão por <a href="http://sergiorebelo.com">Sérgio Rebelo</p>
+            <p>Playground Tools • Criado com ❤️ para a comunidade de desenvolvedores</p>
+            <p>Contribua no <a href="#" style="color: var(--primary);">GitHub</a> | Sugira uma ferramenta</p>
         </div>
     </div>
 
     <script>
-        // Criar estrelas de fundo
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 150;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                
-                // Posição aleatória
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                
-                // Tamanho aleatório
-                const size = Math.random() * 3;
-                
-                // Atraso de animação aleatório
-                const delay = Math.random() * 5;
-                
-                star.style.left = `${x}%`;
-                star.style.top = `${y}%`;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.animationDelay = `${delay}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        
-        // Efeito parallax para as estrelas
-        document.addEventListener('mousemove', function(e) {
-            const stars = document.querySelectorAll('.star');
-            const mouseX = e.clientX / window.innerWidth;
-            const mouseY = e.clientY / window.innerHeight;
-            
-            stars.forEach(star => {
-                const speed = parseFloat(star.style.width) * 0.5;
-                const x = (mouseX - 0.5) * speed;
-                const y = (mouseY - 0.5) * speed;
-                
-                star.style.transform = `translate(${x}px, ${y}px)`;
-            });
-        });
-        
-        // Inicializar
+        // Adicionar efeitos interativos
         document.addEventListener('DOMContentLoaded', function() {
-            createStars();
+            const cards = document.querySelectorAll('.tool-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Adicionar animação de entrada para os cards
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
         });
     </script>
 </body>
