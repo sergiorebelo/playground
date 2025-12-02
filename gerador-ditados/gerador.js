@@ -44,9 +44,19 @@ function showStatus(message, type = 'info', duration = 3000) {
     statusMessage.style.background = type === 'error' ? '#ffdede' : (type === 'success' ? '#d4edda' : '#e9f5ff');
     // hide after duration
     clearTimeout(statusMessage._timeout);
-    statusMessage._timeout = setTimeout(() => {
-        statusMessage.style.display = 'none';
-    }, duration);
+    // If duration is null or 0, keep the status visible until explicitly changed
+    if (duration && duration > 0) {
+        statusMessage._timeout = setTimeout(() => {
+            statusMessage.style.display = 'none';
+        }, duration);
+    }
+}
+
+function updateLastSheetStatus(text, type = 'info') {
+    const el = document.getElementById('lastSheetStatus');
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = type === 'error' ? '#7a1f1f' : (type === 'success' ? '#155724' : '#444');
 }
 
 // Sistema de codificação/decodificação SIMPLIFICADO
@@ -346,7 +356,7 @@ async function carregarDoGoogleSheets(url, options = { applyOnSuccess: true }) {
             { key: 'animaisF', name: 'AnimaisF' },
             { key: 'adjetivosM', name: 'AdjetivosM' },
             { key: 'adjetivosF', name: 'AdjetivosF' },
-            { key: 'negações', name: 'Negacoes' },
+            { key: 'negações', name: 'Negações' },
             { key: 'verbosPresente', name: 'VerbosPresente' },
             { key: 'verbosInfinitivo', name: 'VerbosInfinitivo' },
             { key: 'lugares', name: 'Lugares' }
@@ -405,10 +415,23 @@ async function carregarDoGoogleSheets(url, options = { applyOnSuccess: true }) {
             }
 
             if (effective.length > 0) {
-                palavras[sheet.key] = effective;
+                // Parse CSV lines: take first cell, strip surrounding quotes and unescape double-quotes
+                const parsed = effective.map(line => {
+                    // split on comma or semicolon (common CSV separators); take first column
+                    const parts = line.split(/[,;]+/);
+                    let v = parts[0].trim();
+                    if (v.startsWith('"') && v.endsWith('"')) {
+                        v = v.slice(1, -1);
+                    }
+                    // unescape double quotes
+                    v = v.replace(/""/g, '"');
+                    return v;
+                }).filter(v => v && v.length > 0);
+
+                palavras[sheet.key] = parsed;
                 loadedAny = true;
-                console.log(`Carregado ${effective.length} itens da aba ${sheet.name}`);
-                if (DIAGNOSTIC_MODE) console.debug(`Aba ${sheet.name} amostra:`, effective.slice(0, 6));
+                console.log(`Carregado ${parsed.length} itens da aba ${sheet.name}`);
+                if (DIAGNOSTIC_MODE) console.debug(`Aba ${sheet.name} amostra:`, parsed.slice(0, 6));
             } else {
                 console.warn(`Aba ${sheet.name} não possui linhas úteis após parse.`);
                 showStatus(`Aba ${sheet.name} está vazia ou tem apenas cabeçalho.`, 'info', 5000);
@@ -420,10 +443,13 @@ async function carregarDoGoogleSheets(url, options = { applyOnSuccess: true }) {
         }
 
         // Se ao menos uma aba foi carregada, notifique. Opcionalmente aplicamos (sobrescrevemos)
+        const now = new Date();
         if (options && options.applyOnSuccess === false) {
             showStatus('Palavras carregadas em background (não sobrescreveu o ditado atual)', 'success', 3000);
+            updateLastSheetStatus(`Último carregamento: sucesso às ${now.toLocaleTimeString()}`, 'success');
         } else {
             showStatus('Palavras carregadas do Google Sheets com sucesso!', 'success', 3000);
+            updateLastSheetStatus(`Último carregamento: sucesso às ${now.toLocaleTimeString()}`, 'success');
             gerarDitado(); // Gerar novo ditado com novas palavras
         }
         
@@ -431,6 +457,7 @@ async function carregarDoGoogleSheets(url, options = { applyOnSuccess: true }) {
         console.error('Erro ao carregar do Google Sheets:', error);
         lastSheetLoadFailed = true;
         showStatus('Erro ao carregar. Certifique-se que o Sheets está público.', 'error', 5000);
+        updateLastSheetStatus(`Falha no carregamento: ${error.message} às ${new Date().toLocaleTimeString()}`, 'error');
     }
 }
 

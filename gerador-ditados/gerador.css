@@ -243,6 +243,11 @@ body {
     margin-left: 8px;
 }
 
+#lastSheetStatus {
+    margin-left: 12px;
+    color: #444;
+}
+
 .status-message {
     margin-top: 12px;
     padding: 10px 12px;
