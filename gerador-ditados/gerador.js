@@ -16,6 +16,7 @@ let historico = [];
 let ditadoAtual = null;
 let codigoAtual = '';
 let selecoesAtuais = null;
+let lastSheetLoadFailed = false;
 
 // Elementos DOM
 const ditadoDisplay = document.getElementById('ditadoDisplay');
@@ -327,8 +328,9 @@ function gerarUrlCompartilhavel() {
 }
 
 // Carregar do Google Sheets
-async function carregarDoGoogleSheets(url) {
+async function carregarDoGoogleSheets(url, options = { applyOnSuccess: true }) {
     try {
+        lastSheetLoadFailed = false;
         // Extrair ID do spreadsheet da URL
         const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
         if (!match) {
@@ -416,12 +418,18 @@ async function carregarDoGoogleSheets(url) {
         if (!loadedAny) {
             throw new Error('Nenhuma aba foi carregada com sucesso — verifique URL/permissões/nomes das abas');
         }
-        // Se ao menos uma aba foi carregada, notifique e gere um ditado novo
-        showStatus('Palavras carregadas do Google Sheets com sucesso!', 'success', 3000);
-        gerarDitado(); // Gerar novo ditado com novas palavras
+
+        // Se ao menos uma aba foi carregada, notifique. Opcionalmente aplicamos (sobrescrevemos)
+        if (options && options.applyOnSuccess === false) {
+            showStatus('Palavras carregadas em background (não sobrescreveu o ditado atual)', 'success', 3000);
+        } else {
+            showStatus('Palavras carregadas do Google Sheets com sucesso!', 'success', 3000);
+            gerarDitado(); // Gerar novo ditado com novas palavras
+        }
         
     } catch (error) {
         console.error('Erro ao carregar do Google Sheets:', error);
+        lastSheetLoadFailed = true;
         showStatus('Erro ao carregar. Certifique-se que o Sheets está público.', 'error', 5000);
     }
 }
@@ -501,6 +509,19 @@ shareCode.addEventListener('click', () => {
     copyCodeBtn.click();
 });
 
+// Reload sheets button (force reload)
+const reloadSheetsBtn = document.getElementById('reloadSheetsBtn');
+if (reloadSheetsBtn) {
+    reloadSheetsBtn.addEventListener('click', () => {
+        if (typeof DEFAULT_SHEETS_URL === 'string' && DEFAULT_SHEETS_URL.trim().length > 0) {
+            showStatus('Recarregando palavras do Google Sheets...', 'info', 2000);
+            carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim(), { applyOnSuccess: true });
+        } else {
+            showStatus('DEFAULT_SHEETS_URL não configurado em gerador.js', 'error', 4000);
+        }
+    });
+}
+
 // Atalhos de teclado
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space' && e.target === document.body) {
@@ -533,12 +554,20 @@ window.addEventListener('DOMContentLoaded', () => {
             // Try to load default Google Sheets data (if URL set); otherwise generate using local data
             if (typeof DEFAULT_SHEETS_URL === 'string' && DEFAULT_SHEETS_URL.trim().length > 0) {
                 showStatus('Carregando palavras do Google Sheets configurado...', 'info', 3000);
-                carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim());
+                carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim(), { applyOnSuccess: true });
             } else {
                 setTimeout(() => {
                     gerarDitado();
                 }, 500);
             }
+        }
+    } else {
+        // Page loaded from a shared code; still attempt a background load of the sheet
+        // so the sheet can update words for future generations, but do not overwrite
+        // the ditado that was loaded from the code.
+        if (typeof DEFAULT_SHEETS_URL === 'string' && DEFAULT_SHEETS_URL.trim().length > 0) {
+            showStatus('Carregando palavras do Google Sheets (background)...', 'info', 3000);
+            carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim(), { applyOnSuccess: false });
         }
     }
 });

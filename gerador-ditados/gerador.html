@@ -50,6 +50,11 @@
                 <p><strong>Fonte de palavras:</strong></p>
                 <p>As palavras são carregadas automaticamente de uma planilha Google configurada pelo autor do site. Se o carregamento falhar, os dados locais serão usados como fallback.</p>
                 <p class="small-note">(Você pode editar o arquivo <code>gerador.js</code> e preencher a constante <code>DEFAULT_SHEETS_URL</code> com a URL da planilha.)</p>
+                
+                <div class="reload-row">
+                    <button class="btn btn-secondary" id="reloadSheetsBtn">🔄 Recarregar palavras</button>
+                    <span class="small-note reload-note">Força o reload das palavras a partir da planilha configurada</span>
+                </div>
             </div>
             
             <div class="history">

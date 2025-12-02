@@ -232,6 +232,17 @@ body {
     color: #666;
 }
 
+.reload-row {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reload-note {
+    margin-left: 8px;
+}
+
 .status-message {
     margin-top: 12px;
     padding: 10px 12px;
