@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Ditados Populares</title>
+    <link rel="stylesheet" href="gerador.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Gerador de Ditados Populares</h1>
+            <p>Gere ditados únicos e compartilhe com código!</p>
+        </div>
+        
+        <div class="content">
+            <div class="generator">
+                <div class="ditado-display" id="ditadoDisplay">
+                    Clique em "Gerar Ditado" para começar
+                </div>
+                
+                <div class="share-section">
+                    <div class="share-code" id="shareCode" title="Clique para copiar">
+                        Gere um ditado primeiro...
+                    </div>
+                    
+                    <div class="share-buttons">
+                        <button class="btn btn-secondary" id="copyCodeBtn">
+                            📋 Copiar Código
+                        </button>
+                        <button class="btn btn-success" id="shareUrlBtn">
+                            🔗 Compartilhar URL
+                        </button>
+                    </div>
+                </div>
+
+                <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+                
+                <div class="controls">
+                    <button class="btn btn-primary" id="gerarBtn">
+                        🎲 Gerar Ditado
+                    </button>
+                    <button class="btn btn-secondary" id="copiarBtn">
+                        📝 Copiar Texto
+                    </button>
+                </div>
+            </div>
+            
+            <div class="config-section">
+                <p><strong>Fonte de palavras:</strong></p>
+                <p>As palavras são carregadas automaticamente de uma planilha Google configurada pelo autor do site. Se o carregamento falhar, os dados locais serão usados como fallback.</p>
+                <p class="small-note">(Você pode editar o arquivo <code>gerador.js</code> e preencher a constante <code>DEFAULT_SHEETS_URL</code> com a URL da planilha.)</p>
+            </div>
+            
+            <div class="history">
+                <h2>📜 Histórico</h2>
+                <div class="history-list" id="historyList">
+                    <!-- Histórico será preenchido via JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Gerador de ditados populares • Sistema de código para compartilhar</p>
+        </div>
+    </div>
+
+    <script src="gerador.js" defer></script>
+</body>
+</html>
