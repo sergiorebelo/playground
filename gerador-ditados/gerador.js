@@ -30,6 +30,10 @@ const historyList = document.getElementById('historyList');
 // Example: 'https://docs.google.com/spreadsheets/d/....'
 const DEFAULT_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1VeU8OadYcAOIbtH1AjKdaD4_KUcDr1xxmycCjYnyaSM/edit?usp=sharing';
 
+// Diagnostic mode: when true the loader will log extra details to console and show
+// more descriptive status messages. Set to false to silence verbose diagnostics.
+const DIAGNOSTIC_MODE = true;
+
 // Helper to show status messages to the user
 function showStatus(message, type = 'info', duration = 3000) {
     if (!statusMessage) return;
@@ -448,6 +452,8 @@ copiarBtn.addEventListener('click', () => {
         });
 });
 
+
+// Copiar código compartilhável
 copyCodeBtn.addEventListener('click', () => {
     if (!codigoAtual) return;
     
@@ -466,6 +472,7 @@ copyCodeBtn.addEventListener('click', () => {
         });
 });
 
+// Gerar URL compartilhável
 shareUrlBtn.addEventListener('click', () => {
     if (!codigoAtual) return;
     
@@ -493,9 +500,6 @@ shareCode.addEventListener('click', () => {
     if (!codigoAtual || codigoAtual === 'Gere um ditado primeiro...') return;
     copyCodeBtn.click();
 });
-
-// Note: user sheet upload was removed. The app will attempt to load
-// the DEFAULT_SHEETS_URL (if provided) on startup. This keeps local data as fallback.
 
 // Atalhos de teclado
 document.addEventListener('keydown', (e) => {
