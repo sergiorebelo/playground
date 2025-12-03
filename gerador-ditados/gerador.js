@@ -1,4 +1,4 @@
-// gerador.js - VERSÃO CORRIGIDA
+// gerador.js - VERSÃO ATUALIZADA
 // DADOS LOCAIS (funciona sem internet)
 let palavras = {
     animaisM: ['Cavalo', 'Gato', 'Cachorro', 'Leão', 'Urso', 'Lobo', 'Macaco', 'Tigre', 'Elefante', 'Jacaré'],
@@ -15,25 +15,21 @@ let palavras = {
 let historico = [];
 let ditadoAtual = null;
 let codigoAtual = '';
-let selecoesAtuais = null;
 
 // Elementos DOM
 const ditadoDisplay = document.getElementById('ditadoDisplay');
 const statusMessage = document.getElementById('statusMessage');
 const gerarBtn = document.getElementById('gerarBtn');
 const copiarBtn = document.getElementById('copiarBtn');
-const copyCodeBtn = document.getElementById('copyCodeBtn');
+const copyUrlBtn = document.getElementById('copyUrlBtn');
 const shareUrlBtn = document.getElementById('shareUrlBtn');
-const shareCode = document.getElementById('shareCode');
 const historyList = document.getElementById('historyList');
 
 // URL do Google Sheets (MUDE AQUI com sua URL pública)
-// O Sheets deve estar configurado como "Qualquer pessoa com o link pode visualizar"
 const DEFAULT_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1VeU8OadYcAOIbtH1AjKdaD4_KUcDr1xxmycCjYnyaSM/edit?usp=sharing';
 
-// Sistema de codificação/decodificação
+// Sistema de codificação/decodificação MELHORADO
 function codificarDitado(selecoes) {
-    // Formato: AABBCCDDEE (10 caracteres) - base36
     const animalEncoded = (selecoes.genero === 'F')
         ? (selecoes.animalIdx + palavras.animaisM.length)
         : selecoes.animalIdx;
@@ -51,9 +47,7 @@ function codificarDitado(selecoes) {
     
 function decodificarDitado(codigo) {
     try {
-        if (codigo.length !== 10) {
-            throw new Error('Código inválido');
-        }
+        if (codigo.length !== 10) return null;
         
         const partes = [
             codigo.substring(0, 2),
@@ -64,10 +58,8 @@ function decodificarDitado(codigo) {
         ];
         
         const indices = partes.map(part => parseInt(part, 36));
-
-        if (indices.some(i => Number.isNaN(i) || i < 0)) {
-            throw new Error('Código inválido');
-        }
+        
+        if (indices.some(i => Number.isNaN(i) || i < 0)) return null;
 
         // Determinar gênero
         const combinedAnimalIdx = indices[0];
@@ -76,19 +68,15 @@ function decodificarDitado(codigo) {
             ? combinedAnimalIdx
             : (combinedAnimalIdx - palavras.animaisM.length);
 
-        // Validar índices
-        const adjetivosArray = genero === 'M' ? palavras.adjetivosM : palavras.adjetivosF;
+        // Validar limites
+        const maxAnimais = genero === 'M' ? palavras.animaisM.length : palavras.animaisF.length;
+        const maxAdjetivos = genero === 'M' ? palavras.adjetivosM.length : palavras.adjetivosF.length;
         
-        if (animalIdxAjustado < 0 || 
-            (genero === 'M' && animalIdxAjustado >= palavras.animaisM.length) || 
-            (genero === 'F' && animalIdxAjustado >= palavras.animaisF.length)) {
-            throw new Error('Índice de animal inválido');
-        }
-
-        if (indices[1] < 0 || indices[1] >= adjetivosArray.length ||
+        if (animalIdxAjustado < 0 || animalIdxAjustado >= maxAnimais ||
+            indices[1] < 0 || indices[1] >= maxAdjetivos ||
             indices[2] < 0 || indices[2] >= palavras.negações.length ||
             indices[4] < 0 || indices[4] >= palavras.lugares.length) {
-            throw new Error('Índice inválido');
+            return null;
         }
 
         return {
@@ -129,9 +117,7 @@ function gerarDitado(selecoesEspecificas = null) {
         };
     }
     
-    selecoesAtuais = selecoes;
-    
-    // Recuperar palavras CORRETAS de cada categoria
+    // Recuperar palavras
     const animal = selecoes.genero === 'F' 
         ? palavras.animaisF[selecoes.animalIdx] 
         : palavras.animaisM[selecoes.animalIdx];
@@ -153,23 +139,36 @@ function gerarDitado(selecoesEspecificas = null) {
     
     ditadoAtual = `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
     
-    codigoAtual = codificarDitado(selecoes);
+    // Gerar URL diretamente (não mostrar código isolado)
+    const novaUrl = gerarUrlComDitado(selecoes);
+    codigoAtual = extrairCodigoDaUrl(novaUrl);
     
     ditadoDisplay.textContent = ditadoAtual;
-    shareCode.textContent = codigoAtual;
-    shareCode.style.cursor = 'pointer';
     
-    adicionarAoHistorico(ditadoAtual, codigoAtual);
+    adicionarAoHistorico(ditadoAtual, novaUrl);
     
-    return { ditado: ditadoAtual, codigo: codigoAtual, selecoes };
+    return { ditado: ditadoAtual, url: novaUrl, selecoes };
 }
 
-// Histórico
-function adicionarAoHistorico(ditado, codigo) {
+// GERAR URL com código embutido
+function gerarUrlComDitado(selecoes) {
+    const codigo = codificarDitado(selecoes);
+    return `${window.location.origin}${window.location.pathname}?c=${codigo}`;
+}
+
+// Extrair código da URL
+function extrairCodigoDaUrl(url) {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get('c') || '';
+}
+
+// Histórico com URLs (não códigos)
+function adicionarAoHistorico(ditado, url) {
     const item = {
         ditado,
-        codigo,
-        timestamp: new Date().toLocaleTimeString()
+        url,
+        timestamp: new Date().toLocaleTimeString(),
+        codigo: extrairCodigoDaUrl(url)
     };
     
     historico.unshift(item);
@@ -207,11 +206,11 @@ function atualizarHistorico() {
             <div>
                 <strong>${historico.length - index}.</strong> ${item.ditado}
                 <div class="history-meta">
-                    ${item.timestamp} • Código: <span class="history-code" data-code="${item.codigo}">${item.codigo}</span>
+                    ${item.timestamp}
                 </div>
             </div>
             <div>
-                <button class="btn btn-secondary" data-code="${item.codigo}">Recriar</button>
+                <button class="btn btn-secondary" data-url="${item.url}">🔗 Copiar Link</button>
             </div>
         </div>
     `).join('');
@@ -233,10 +232,9 @@ function showStatus(message, type = 'info', duration = 3000) {
     }
 }
 
-// Carregar do Google Sheets - VERSÃO SIMPLIFICADA E FUNCIONAL
+// Carregar do Google Sheets
 async function carregarDoGoogleSheets(url) {
     try {
-        // Extrair ID do spreadsheet
         const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
         if (!match) {
             showStatus('URL do Google Sheets inválida', 'error', 4000);
@@ -244,8 +242,6 @@ async function carregarDoGoogleSheets(url) {
         }
         
         const spreadsheetId = match[1];
-        
-        // Lista de abas que PRECISAM existir
         const sheets = [
             { key: 'animaisM', name: 'AnimaisM' },
             { key: 'animaisF', name: 'AnimaisF' },
@@ -264,22 +260,15 @@ async function carregarDoGoogleSheets(url) {
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet.name)}`;
                 
                 const response = await fetch(csvUrl);
-                if (!response.ok) {
-                    console.warn(`Aba ${sheet.name} não encontrada, usando padrão`);
-                    continue;
-                }
+                if (!response.ok) continue;
                 
                 const csvText = await response.text();
-                
-                // Processar CSV corretamente
                 const linhas = csvText.split('\n')
                     .map(linha => {
-                        // Remover aspas e processar CSV simples
                         let texto = linha.trim();
                         if (texto.startsWith('"') && texto.endsWith('"')) {
                             texto = texto.substring(1, texto.length - 1);
                         }
-                        // Separar por vírgula e pegar primeira coluna
                         const partes = texto.split(',');
                         return partes[0] ? partes[0].trim() : '';
                     })
@@ -288,7 +277,6 @@ async function carregarDoGoogleSheets(url) {
                 if (linhas.length > 0) {
                     palavras[sheet.key] = linhas;
                     totalCarregado++;
-                    console.log(`✅ Carregado ${linhas.length} ${sheet.key} da aba ${sheet.name}`);
                 }
             } catch (error) {
                 console.warn(`Erro ao carregar aba ${sheet.name}:`, error);
@@ -296,21 +284,21 @@ async function carregarDoGoogleSheets(url) {
         }
         
         if (totalCarregado > 0) {
-            showStatus(`✅ Carregadas palavras de ${totalCarregado} categorias do Google Sheets`, 'success', 3000);
+            showStatus(`✅ Carregadas palavras de ${totalCarregado} categorias`, 'success', 3000);
             return true;
         } else {
-            showStatus('⚠️ Nenhuma aba carregada. Usando palavras locais.', 'info', 4000);
+            showStatus('⚠️ Usando palavras locais', 'info', 4000);
             return false;
         }
         
     } catch (error) {
         console.error('Erro ao carregar do Google Sheets:', error);
-        showStatus('❌ Erro ao carregar do Google Sheets. Usando palavras locais.', 'error', 4000);
+        showStatus('❌ Erro ao carregar. Usando palavras locais.', 'error', 4000);
         return false;
     }
 }
 
-// Verificar código na URL
+// Verificar código na URL ao carregar a página
 function verificarCodigoNaUrl() {
     const params = new URLSearchParams(window.location.search);
     const codigo = params.get('c');
@@ -318,31 +306,52 @@ function verificarCodigoNaUrl() {
     if (codigo) {
         const selecoes = decodificarDitado(codigo);
         if (selecoes) {
-            gerarDitado(selecoes);
+            // Gerar ditado a partir do código
+            const animal = selecoes.genero === 'F' 
+                ? palavras.animaisF[selecoes.animalIdx] 
+                : palavras.animaisM[selecoes.animalIdx];
+            
+            const adjetivo = selecoes.genero === 'F'
+                ? palavras.adjetivosF[selecoes.adjetivoIdx]
+                : palavras.adjetivosM[selecoes.adjetivoIdx];
+            
+            const negacao = palavras.negações[selecoes.negacaoIdx];
+            
+            let verbo;
+            if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
+                verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
+            } else {
+                verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
+            }
+            
+            const lugar = palavras.lugares[selecoes.lugarIdx];
+            
+            ditadoAtual = `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
+            ditadoDisplay.textContent = ditadoAtual;
+            
+            // Atualizar URL para manter o código
             const novaUrl = `${window.location.origin}${window.location.pathname}?c=${codigo}`;
             window.history.replaceState({}, '', novaUrl);
+            
             showStatus('📨 Ditado carregado do link compartilhado', 'success', 3000);
             return true;
         } else {
-            showStatus('Código inválido na URL', 'error', 4000);
+            showStatus('Link inválido ou expirado', 'error', 4000);
+            // Remover código inválido da URL
+            window.history.replaceState({}, '', window.location.pathname);
         }
     }
     return false;
 }
 
-// Gerar URL compartilhável
-function gerarUrlCompartilhavel() {
-    if (!codigoAtual) return '';
-    return `${window.location.origin}${window.location.pathname}?c=${codigoAtual}`;
-}
-
 // Event Listeners
 gerarBtn.addEventListener('click', () => {
-    gerarDitado();
+    const resultado = gerarDitado();
     
-    if (window.location.search.includes('c=')) {
-        window.history.replaceState({}, '', window.location.pathname);
-    }
+    // Atualizar URL no navegador com o novo ditado
+    window.history.pushState({}, '', `?c=${extrairCodigoDaUrl(resultado.url)}`);
+    
+    showStatus('🎲 Novo ditado gerado!', 'success', 2000);
 });
 
 copiarBtn.addEventListener('click', () => {
@@ -350,75 +359,60 @@ copiarBtn.addEventListener('click', () => {
     
     navigator.clipboard.writeText(ditadoAtual)
         .then(() => {
-            const originalText = ditadoDisplay.textContent;
-            ditadoDisplay.textContent = "✓ Ditado copiado!";
-            ditadoDisplay.style.color = '#27ae60';
-            
-            setTimeout(() => {
-                ditadoDisplay.textContent = originalText;
-                ditadoDisplay.style.color = '#333';
-            }, 1500);
+            showStatus('📝 Ditado copiado!', 'success', 1500);
         });
 });
 
-copyCodeBtn.addEventListener('click', () => {
-    if (!codigoAtual) return;
+// Copiar URL atual (botão "Copiar Link")
+copyUrlBtn.addEventListener('click', () => {
+    if (!codigoAtual && !window.location.search.includes('c=')) {
+        showStatus('Gere um ditado primeiro!', 'error', 2000);
+        return;
+    }
     
-    navigator.clipboard.writeText(codigoAtual)
+    const urlParaCopiar = window.location.href;
+    navigator.clipboard.writeText(urlParaCopiar)
         .then(() => {
-            const originalText = shareCode.textContent;
-            shareCode.textContent = "✓ Código copiado!";
-            shareCode.style.color = '#27ae60';
-            shareCode.style.fontWeight = 'bold';
-            
-            setTimeout(() => {
-                shareCode.textContent = originalText;
-                shareCode.style.color = '#333';
-                shareCode.style.fontWeight = 'normal';
-            }, 1500);
+            showStatus('🔗 Link copiado! Cole para compartilhar', 'success', 2000);
         });
 });
 
+// Compartilhar em redes sociais (botão "Compartilhar")
 shareUrlBtn.addEventListener('click', () => {
-    if (!codigoAtual) return;
+    if (!codigoAtual && !window.location.search.includes('c=')) {
+        showStatus('Gere um ditado primeiro!', 'error', 2000);
+        return;
+    }
     
-    const url = gerarUrlCompartilhavel();
+    const urlParaCompartilhar = window.location.href;
+    const textoParaCompartilhar = `Veja este ditado que gerei: "${ditadoAtual || 'Ditado popular engraçado'}"`;
+    
+    // Tenta usar Web Share API se disponível
+    if (navigator.share) {
+        navigator.share({
+            title: 'Ditado Popular Gerado',
+            text: textoParaCompartilhar,
+            url: urlParaCompartilhar
+        });
+    } else {
+        // Fallback: copia para clipboard
+        navigator.clipboard.writeText(`${textoParaCompartilhar}\n${urlParaCompartilhar}`)
+            .then(() => {
+                showStatus('📤 Link pronto para compartilhar! (copiado)', 'success', 2000);
+            });
+    }
+});
+
+// Click handler para histórico (copiar link do histórico)
+historyList.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-url]');
+    if (!btn) return;
+    const url = btn.getAttribute('data-url');
+    
     navigator.clipboard.writeText(url)
         .then(() => {
-            window.history.pushState({}, '', `?c=${codigoAtual}`);
-            
-            const originalText = shareCode.textContent;
-            shareCode.textContent = "✓ URL copiada!";
-            shareCode.style.color = '#27ae60';
-            shareCode.style.fontWeight = 'bold';
-            
-            setTimeout(() => {
-                shareCode.textContent = originalText;
-                shareCode.style.color = '#333';
-                shareCode.style.fontWeight = 'normal';
-            }, 1500);
+            showStatus('🔗 Link do histórico copiado!', 'success', 2000);
         });
-});
-
-shareCode.addEventListener('click', () => {
-    if (!codigoAtual || codigoAtual === 'Gere um ditado primeiro...') return;
-    copyCodeBtn.click();
-});
-
-// Click handler para histórico
-historyList.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-code]');
-    if (!btn) return;
-    const codigo = btn.getAttribute('data-code');
-    if (!codigo) return;
-
-    const selecoes = decodificarDitado(codigo);
-    if (selecoes) {
-        gerarDitado(selecoes);
-        showStatus('Ditado restaurado do histórico', 'success', 2000);
-    } else {
-        showStatus('Código do histórico inválido', 'error', 3000);
-    }
 });
 
 // Botão para recarregar do Sheets
@@ -426,10 +420,10 @@ const reloadSheetsBtn = document.getElementById('reloadSheetsBtn');
 if (reloadSheetsBtn) {
     reloadSheetsBtn.addEventListener('click', () => {
         if (DEFAULT_SHEETS_URL && DEFAULT_SHEETS_URL.trim().length > 0) {
-            showStatus('🔄 Recarregando palavras do Google Sheets...', 'info', 2000);
+            showStatus('🔄 Recarregando palavras...', 'info', 2000);
             carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim()).then(success => {
                 if (success) {
-                    gerarDitado(); // Gerar novo com palavras atualizadas
+                    gerarDitado();
                 }
             });
         } else {
@@ -446,26 +440,31 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Gerenciar navegação no histórico do navegador
+window.addEventListener('popstate', () => {
+    verificarCodigoNaUrl();
+});
+
 // Inicializar
 window.addEventListener('DOMContentLoaded', () => {
     // Carregar histórico
     loadHistoricoFromLocal();
     atualizarHistorico();
 
-    // Verificar código na URL
-    const temCodigo = verificarCodigoNaUrl();
+    // Verificar se veio de um link compartilhado
+    const veioDeLink = verificarCodigoNaUrl();
 
-    if (!temCodigo) {
+    if (!veioDeLink) {
         // Carregar do Google Sheets se configurado
         if (DEFAULT_SHEETS_URL && DEFAULT_SHEETS_URL.trim().length > 0) {
-            showStatus('📥 Carregando palavras do Google Sheets...', 'info', 2000);
+            showStatus('📥 Carregando palavras...', 'info', 2000);
             carregarDoGoogleSheets(DEFAULT_SHEETS_URL.trim()).then(success => {
                 if (success || historico.length === 0) {
                     gerarDitado();
                 }
             });
         } else {
-            // Usar palavras locais
+            // Gerar primeiro ditado
             setTimeout(() => {
                 gerarDitado();
             }, 500);

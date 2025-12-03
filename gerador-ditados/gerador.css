@@ -99,9 +99,10 @@ body {
 
 .share-buttons {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
     justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
 }
 
 .controls {
@@ -174,6 +175,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background 0.2s;
 }
 
 .history-item .code {
@@ -183,6 +185,15 @@ body {
     border-radius: 5px;
     font-size: 0.85rem;
     color: #666;
+}
+
+.history-item .btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.history-item:hover {
+    background: #f8f9fa;
 }
 
 .history-meta {
@@ -257,6 +268,16 @@ body {
     text-align: center;
     font-size: 0.95rem;
     display: none;
+}
+
+.url-info {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: #f0f7ff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 @media (max-width: 768px) {

@@ -1,3 +1,4 @@
+<!-- gerador.html - ATUALIZADO -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,7 +11,7 @@
     <div class="container">
         <div class="header">
             <h1>🧠 Gerador de Ditados Populares</h1>
-            <p>Gere ditados únicos e compartilhe com código!</p>
+            <p>Gere ditados únicos e compartilhe o link!</p>
         </div>
         
         <div class="content">
@@ -19,47 +20,40 @@
                     Clique em "Gerar Ditado" para começar
                 </div>
                 
-                <div class="share-section">
-                    <div class="share-code" id="shareCode" title="Clique para copiar">
-                        Gere um ditado primeiro...
-                    </div>
-                    
-                    <div class="share-buttons">
-                        <button class="btn btn-secondary" id="copyCodeBtn">
-                            📋 Copiar Código
-                        </button>
-                        <button class="btn btn-success" id="shareUrlBtn">
-                            🔗 Compartilhar URL
-                        </button>
-                    </div>
-                </div>
-
                 <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
                 
-                <div class="controls">
+                <div class="share-buttons">
                     <button class="btn btn-primary" id="gerarBtn">
                         🎲 Gerar Ditado
                     </button>
                     <button class="btn btn-secondary" id="copiarBtn">
                         📝 Copiar Texto
                     </button>
+                    <button class="btn btn-success" id="copyUrlBtn">
+                        🔗 Copiar Link
+                    </button>
+                    <button class="btn btn-success" id="shareUrlBtn">
+                        📤 Compartilhar
+                    </button>
+                </div>
+                
+                <div class="url-info">
+                    <p><small>O link atual já contém seu ditado. Compartilhe esta página!</small></p>
                 </div>
             </div>
             
             <div class="config-section">
                 <p><strong>Fonte de palavras:</strong></p>
-                <p>As palavras são carregadas automaticamente de uma planilha Google configurada pelo autor do site. Se o carregamento falhar, os dados locais serão usados como fallback.</p>
-                <p class="small-note">(Você pode editar o arquivo <code>gerador.js</code> e preencher a constante <code>DEFAULT_SHEETS_URL</code> com a URL da planilha.)</p>
+                <p>As palavras são carregadas automaticamente de uma planilha Google.</p>
                 
                 <div class="reload-row">
                     <button class="btn btn-secondary" id="reloadSheetsBtn">🔄 Recarregar palavras</button>
-                    <span class="small-note reload-note">Força o reload das palavras a partir da planilha configurada</span>
-                    <div id="lastSheetStatus" class="small-note" style="margin-left:12px"></div>
+                    <span class="small-note reload-note">Atualiza as palavras da planilha</span>
                 </div>
             </div>
             
             <div class="history">
-                <h2>📜 Histórico</h2>
+                <h2>📜 Histórico Recente</h2>
                 <div class="history-list" id="historyList">
                     <!-- Histórico será preenchido via JavaScript -->
                 </div>
@@ -67,7 +61,8 @@
         </div>
         
         <div class="footer">
-            <p>Gerador de ditados populares • Sistema de código para compartilhar</p>
+            <p>Gerador de ditados populares • Cada link gera o mesmo ditado</p>
+            <p><small>Compartilhe o link para mostrar seu ditado a outras pessoas!</small></p>
         </div>
     </div>
 
