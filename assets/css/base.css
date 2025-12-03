@@ -196,7 +196,7 @@ header h1,
     margin-top: auto;
 }
 
-/* Ribbons tipo “em breve” */
+/* Coming Soon Ribbons */
 
 .coming-soon {
     position: relative;
@@ -214,6 +214,43 @@ header h1,
     transform: rotate(45deg);
     font-size: 0.78rem;
     font-weight: 700;
+}
+
+/* Badges de idioma (PT / EN) */
+.lang-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.45rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: #e5e7eb; /* fallback neutro */
+    color: #111827;
+}
+
+/* Badge PT */
+.lang-badge.lang-pt {
+    background: rgba(239, 68, 68, 0.12); /* vermelho suave */
+    color: #b91c1c;
+    border: 1px solid rgba(185, 28, 28, 0.25);
+}
+
+/* Badge EN */
+.lang-badge.lang-en {
+    background: rgba(59, 130, 246, 0.12); /* azul suave */
+    color: #1d4ed8;
+    border: 1px solid rgba(29, 78, 216, 0.25);
+}
+
+/* Meta text (descrição pequena por baixo do card-title) */
+.card-meta {
+    margin-top: 4px;
+    font-size: 0.78rem;
+    color: var(--gray, #6b7280);
 }
 
 /* ===========================
