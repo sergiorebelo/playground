@@ -204,7 +204,7 @@ header h1,
 }
 
 .coming-soon::after {
-    content: "EM BREVE";
+    content: "Coming Soon";
     position: absolute;
     top: 18px;
     right: -26px;
@@ -492,9 +492,6 @@ button,
     align-items: center;
     justify-content: center;
     gap: 6px;
-}
-
-.btn {
     width: 100%;
     text-align: center;
 }
@@ -573,6 +570,7 @@ button:active,
    =========================== */
 
 @media (max-width: 768px) {
+
     header,
     .header {
         padding: 22px 18px;
