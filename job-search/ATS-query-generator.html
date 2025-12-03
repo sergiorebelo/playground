@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,51 +17,51 @@
             --border: #dee2e6;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
             background-color: #f5f7fb;
             color: var(--dark);
             line-height: 1.6;
             padding: 20px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-        
+
         header {
             text-align: center;
             margin-bottom: 40px;
             padding: 20px;
         }
-        
+
         h1 {
             color: var(--primary);
             margin-bottom: 10px;
             font-size: 2.5rem;
         }
-        
+
         .subtitle {
             color: #6c757d;
             font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .app-container {
             display: flex;
             flex-wrap: wrap;
             gap: 30px;
         }
-        
+
         .config-panel {
             flex: 1;
             min-width: 400px;
@@ -69,7 +70,7 @@
             padding: 25px;
             box-shadow: var(--shadow);
         }
-        
+
         .result-panel {
             flex: 1;
             min-width: 400px;
@@ -80,19 +81,20 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         .control-group {
             margin-bottom: 25px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--dark);
         }
-        
-        select, input[type="text"] {
+
+        select,
+        input[type="text"] {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid var(--border);
@@ -100,23 +102,24 @@
             font-size: 1rem;
             transition: border 0.3s;
         }
-        
-        select:focus, input[type="text"]:focus {
+
+        select:focus,
+        input[type="text"]:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
-        
+
         .checkbox-section {
             margin: 15px 0;
         }
-        
+
         .checkbox-section h3 {
             margin-bottom: 15px;
             color: var(--primary);
             font-size: 1.1rem;
         }
-        
+
         .checkbox-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -127,7 +130,7 @@
             border: 1px solid var(--border);
             border-radius: 8px;
         }
-        
+
         .checkbox-item {
             display: flex;
             align-items: center;
@@ -135,26 +138,26 @@
             border-radius: 6px;
             transition: background-color 0.2s;
         }
-        
+
         .checkbox-item:hover {
             background-color: #f8f9fa;
         }
-        
+
         .checkbox-item input {
             margin-right: 10px;
             transform: scale(1.2);
         }
-        
+
         .checkbox-item label {
             font-weight: normal;
             margin-bottom: 0;
             cursor: pointer;
         }
-        
+
         .select-all {
             margin-bottom: 10px;
         }
-        
+
         .select-all button {
             background: none;
             border: none;
@@ -164,13 +167,13 @@
             text-decoration: underline;
             padding: 5px 0;
         }
-        
+
         .buttons {
             display: flex;
             gap: 15px;
             margin-top: 20px;
         }
-        
+
         button {
             padding: 12px 20px;
             border: none;
@@ -181,39 +184,39 @@
             transition: all 0.3s;
             flex: 1;
         }
-        
+
         .btn-primary {
             background-color: var(--primary);
             color: white;
         }
-        
+
         .btn-primary:hover {
             background-color: var(--primary-dark);
         }
-        
+
         .btn-secondary {
             background-color: var(--secondary);
             color: white;
         }
-        
+
         .btn-secondary:hover {
             background-color: #5a08a0;
         }
-        
+
         .btn-success {
             background-color: var(--success);
             color: white;
         }
-        
+
         .btn-success:hover {
             background-color: #3ab0d5;
         }
-        
+
         .query-result {
             flex: 1;
             margin-top: 15px;
         }
-        
+
         textarea {
             width: 100%;
             height: 250px;
@@ -226,7 +229,7 @@
             background-color: #f8f9fa;
             line-height: 1.4;
         }
-        
+
         .preview {
             margin-top: 20px;
             padding: 15px;
@@ -234,16 +237,16 @@
             border-radius: 8px;
             font-size: 0.9rem;
         }
-        
+
         .preview h3 {
             margin-bottom: 10px;
             color: var(--primary);
         }
-        
+
         .hidden {
             display: none;
         }
-        
+
         .query-stats {
             display: flex;
             justify-content: space-between;
@@ -251,35 +254,37 @@
             font-size: 0.9rem;
             color: #6c757d;
         }
-        
+
         .location-hint {
             font-size: 0.85rem;
             color: #6c757d;
             margin-top: 5px;
         }
-        
+
         @media (max-width: 768px) {
             .app-container {
                 flex-direction: column;
             }
-            
+
             .buttons {
                 flex-direction: column;
             }
-            
+
             .checkbox-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>Gerador de Queries ATS</h1>
-            <p class="subtitle">Pesquisa avançada em plataformas de recrutamento com queries específicas para cada ATS</p>
+            <p class="subtitle">Pesquisa avançada em plataformas de recrutamento com queries específicas para cada ATS
+            </p>
         </header>
-        
+
         <div class="app-container">
             <div class="config-panel">
                 <div class="control-group">
@@ -294,9 +299,10 @@
                         <option value="data-scientist">Data Scientist</option>
                         <option value="custom">Personalizado</option>
                     </select>
-                    <input type="text" id="custom-role" class="hidden" placeholder="Ex: Java Developer, DevOps Engineer">
+                    <input type="text" id="custom-role" class="hidden"
+                        placeholder="Ex: Java Developer, DevOps Engineer">
                 </div>
-                
+
                 <div class="control-group">
                     <label for="location-type">Tipo de Trabalho:</label>
                     <select id="location-type">
@@ -307,7 +313,7 @@
                     <input type="text" id="custom-location" placeholder="Ex: Lisboa, Portugal | Berlin, Germany">
                     <div class="location-hint">Para híbrido/presencial: inclua cidade e país</div>
                 </div>
-                
+
                 <div class="control-group">
                     <label>Plataformas ATS:</label>
                     <div class="select-all">
@@ -318,7 +324,7 @@
                         <!-- ATS platforms will be populated by JavaScript -->
                     </div>
                 </div>
-                
+
                 <div class="control-group">
                     <label for="time-filter">Publicadas:</label>
                     <select id="time-filter">
@@ -328,33 +334,39 @@
                         <option value="any">Qualquer data</option>
                     </select>
                 </div>
-                
+
                 <div class="buttons">
                     <button id="generate-btn" class="btn-primary">Gerar Query ATS</button>
                     <button id="reset-btn" class="btn-secondary">Limpar</button>
                 </div>
             </div>
-            
+
             <div class="result-panel">
                 <h2>Query ATS Gerada</h2>
                 <div class="query-result">
-                    <textarea id="generated-query" readonly placeholder="A sua query ATS personalizada aparecerá aqui..."></textarea>
+                    <textarea id="generated-query" readonly
+                        placeholder="A sua query ATS personalizada aparecerá aqui..."></textarea>
                     <div class="query-stats">
                         <span id="query-length">0 caracteres</span>
                         <span id="platform-count">0 plataformas ATS</span>
                     </div>
                 </div>
-                
+
                 <div class="buttons">
                     <button id="copy-btn" class="btn-success">Copiar Query</button>
                     <button id="test-btn" class="btn-primary">Testar no Google</button>
                 </div>
-                
+
                 <div class="preview">
                     <h3>Detalhes da Pesquisa ATS</h3>
                     <p id="search-preview">A pré-visualização aparecerá aqui após gerar a query.</p>
                 </div>
             </div>
+        </div>
+        <div class="footer">
+            <p>Gerador de Queries ATS criado com ❤️ por <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
+            <p><small>Para mais ferramentas, visita o <a href="http://sergiorebelo.org">Playground do
+                        Sérgio</a>!</small></p>
         </div>
     </div>
 
@@ -517,22 +529,22 @@
         }
 
         // Event Listeners
-        roleSelect.addEventListener('change', function() {
+        roleSelect.addEventListener('change', function () {
             customRoleInput.classList.toggle('hidden', this.value !== 'custom');
         });
 
-        locationTypeSelect.addEventListener('change', function() {
+        locationTypeSelect.addEventListener('change', function () {
             const isSpecific = this.value === 'specific' || this.value === 'hybrid';
             customLocationInput.style.display = isSpecific ? 'block' : 'none';
         });
 
-        selectAllBtn.addEventListener('click', function() {
+        selectAllBtn.addEventListener('click', function () {
             document.querySelectorAll('#ats-platforms input[type="checkbox"]').forEach(cb => {
                 cb.checked = true;
             });
         });
 
-        deselectAllBtn.addEventListener('click', function() {
+        deselectAllBtn.addEventListener('click', function () {
             document.querySelectorAll('#ats-platforms input[type="checkbox"]').forEach(cb => {
                 cb.checked = false;
             });
@@ -550,7 +562,7 @@
             const locationType = locationTypeSelect.value;
             const customLocation = customLocationInput.value;
             const selectedATS = Array.from(document.querySelectorAll('#ats-platforms input[type="checkbox"]:checked'))
-                                   .map(cb => cb.value);
+                .map(cb => cb.value);
             const timeFilter = timeFilterSelect.value;
 
             // Construir parte do cargo
@@ -562,7 +574,7 @@
             } else {
                 roleQuery = '"UX Designer" OR "Product Designer"';
             }
-            
+
             // Construir parte da localização
             let locationQuery = '';
             if (locationType === 'remote') {
@@ -570,17 +582,17 @@
             } else if ((locationType === 'specific' || locationType === 'hybrid') && customLocation) {
                 const locationParts = customLocation.split(',').map(part => part.trim());
                 let locationTerms = [];
-                
+
                 locationParts.forEach(part => {
                     locationTerms.push(`"${part}"`);
                     if (locationType === 'hybrid') {
                         locationTerms.push(`"${part} hybrid"`, `"${part} remote"`);
                     }
                 });
-                
+
                 locationQuery = `(${locationTerms.join(' OR ')})`;
             }
-            
+
             // Construir parte das ATS
             let atsQuery = '';
             if (selectedATS.length > 0) {
@@ -589,21 +601,21 @@
             } else {
                 atsQuery = 'site:boards.greenhouse.io OR site:jobs.lever.co';
             }
-            
+
             // Construir filtro de tempo
             const timeQuery = timeFilter !== 'any' ? `&tbs=qdr:${timeFilter}` : '';
-            
+
             // Montar query final - formato otimizado para ATS
             let finalQuery = `${roleQuery} ${locationQuery} ${atsQuery}${timeQuery}`;
-            
+
             // Limpar espaços extras
             finalQuery = finalQuery.replace(/\s+/g, ' ').trim();
-            
+
             // Atualizar UI
             generatedQuery.value = finalQuery;
             queryLength.textContent = `${finalQuery.length} caracteres`;
             platformCount.textContent = `${selectedATS.length} plataforma(s) ATS`;
-            
+
             // Atualizar pré-visualização
             updatePreview(role, customRole, locationType, customLocation, selectedATS.length);
         }
@@ -615,7 +627,7 @@
             } else {
                 roleText = roleSelect.options[roleSelect.selectedIndex].text;
             }
-            
+
             let locationText = '';
             if (locationType === 'remote') {
                 locationText = ' | Remoto';
@@ -624,9 +636,9 @@
             } else if (locationType === 'specific' && customLocation) {
                 locationText = ` | ${customLocation}`;
             }
-            
+
             const timeText = timeFilterSelect.options[timeFilterSelect.selectedIndex].text.toLowerCase();
-            
+
             searchPreview.innerHTML = `
                 <strong>Pesquisa ATS por:</strong> ${roleText}${locationText}<br>
                 <strong>Publicadas:</strong> ${timeText}<br>
@@ -675,4 +687,5 @@
         resetForm();
     </script>
 </body>
+
 </html>

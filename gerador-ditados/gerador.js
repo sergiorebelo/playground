@@ -1,4 +1,4 @@
-// gerador.js - VERSÃO ATUALIZADA
+
 // DADOS LOCAIS (funciona sem internet)
 let palavras = {
     animaisM: ['Cavalo', 'Gato', 'Cachorro', 'Leão', 'Urso', 'Lobo', 'Macaco', 'Tigre', 'Elefante', 'Jacaré'],
@@ -15,6 +15,7 @@ let palavras = {
 let historico = [];
 let ditadoAtual = null;
 let codigoAtual = '';
+let work = 'local'; // this need to be set to remote when words are loaded
 
 // Elementos DOM
 const ditadoDisplay = document.getElementById('ditadoDisplay');
@@ -28,131 +29,177 @@ const historyList = document.getElementById('historyList');
 // URL do Google Sheets (MUDE AQUI com sua URL pública)
 const DEFAULT_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1VeU8OadYcAOIbtH1AjKdaD4_KUcDr1xxmycCjYnyaSM/edit?usp=sharing';
 
-// Sistema de codificação/decodificação MELHORADO
-function codificarDitado(selecoes) {
-    const animalEncoded = (selecoes.genero === 'F')
-        ? (selecoes.animalIdx + palavras.animaisM.length)
-        : selecoes.animalIdx;
+/**
+ * Encodes ditado selections into a compact code
+ * 
+ * @param {} selected an object with selected indexes
+ * @returns the ditado code
+ */
+function encodeDitado(selected) {
 
-    const partes = [
-        animalEncoded.toString(36).toUpperCase().padStart(2, '0'),
-        selecoes.adjetivoIdx.toString(36).toUpperCase().padStart(2, '0'),
-        selecoes.negacaoIdx.toString(36).toUpperCase().padStart(2, '0'),
-        selecoes.verboIdx.toString(36).toUpperCase().padStart(2, '0'),
-        selecoes.lugarIdx.toString(36).toUpperCase().padStart(2, '0')
+    const code = [
+        selected.animalIdx.toString(36).toUpperCase().padStart(2, '0'),
+        selected.adjetivoIdx.toString(36).toUpperCase().padStart(2, '0'),
+        selected.negacaoIdx.toString(36).toUpperCase().padStart(2, '0'),
+        selected.verboIdx.toString(36).toUpperCase().padStart(2, '0'),
+        selected.lugarIdx.toString(36).toUpperCase().padStart(2, '0'),
+        selected.genero,
+        work === 'remote' ? 'R' : 'L' // L for local, R for remote
     ];
 
-    return partes.join('');
+    return code.join('');
 }
-    
-function decodificarDitado(codigo) {
+
+/**
+ * Decodes ditado code into selections
+ * 
+ * @param {} code a 12-character code
+ * @returns  the selections or null if invalid
+ */
+function decodeDitado(code) {
     try {
-        if (codigo.length !== 10) return null;
-        
-        const partes = [
-            codigo.substring(0, 2),
-            codigo.substring(2, 4),
-            codigo.substring(4, 6),
-            codigo.substring(6, 8),
-            codigo.substring(8, 10)
+        if (code.length !== 12) return null;
+
+        const fractions = [
+            code.substring(0, 2),
+            code.substring(2, 4),
+            code.substring(4, 6),
+            code.substring(6, 8),
+            code.substring(8, 10),
+            code.substring(10, 11),
+            code.substring(11, 12)
         ];
-        
-        const indices = partes.map(part => parseInt(part, 36));
-        
-        if (indices.some(i => Number.isNaN(i) || i < 0)) return null;
 
-        // Determinar gênero
-        const combinedAnimalIdx = indices[0];
-        const genero = combinedAnimalIdx < palavras.animaisM.length ? 'M' : 'F';
-        const animalIdxAjustado = genero === 'M'
-            ? combinedAnimalIdx
-            : (combinedAnimalIdx - palavras.animaisM.length);
+        const indexes = fractions.map(fraction => parseInt(fraction, 36));
 
-        // Validar limites
-        const maxAnimais = genero === 'M' ? palavras.animaisM.length : palavras.animaisF.length;
-        const maxAdjetivos = genero === 'M' ? palavras.adjetivosM.length : palavras.adjetivosF.length;
-        
-        if (animalIdxAjustado < 0 || animalIdxAjustado >= maxAnimais ||
-            indices[1] < 0 || indices[1] >= maxAdjetivos ||
-            indices[2] < 0 || indices[2] >= palavras.negações.length ||
-            indices[4] < 0 || indices[4] >= palavras.lugares.length) {
-            return null;
-        }
+        if (indexes.some(i => Number.isNaN(i) || i < 0)) return null;
+
+        // validation of codes can go here: 
+        // todo: check max values based on gender
+        // todo: check if code is local or remote (sheets loaded)
 
         return {
-            animalIdx: animalIdxAjustado,
-            adjetivoIdx: indices[1],
-            negacaoIdx: indices[2],
-            verboIdx: indices[3],
-            lugarIdx: indices[4],
-            genero: genero
+            animalIdx: indexes[0],
+            adjetivoIdx: indexes[1],
+            negacaoIdx: indexes[2],
+            verboIdx: indexes[3],
+            lugarIdx: indexes[4],
+            genero: indexes[5]
         };
     } catch (error) {
-        console.error('Erro ao decodificar:', error);
+        console.error('Erro ao descodificar:', error);
         return null;
     }
 }
 
-// Função para gerar ditado
-function gerarDitado(selecoesEspecificas = null) {
-    let selecoes;
-    
-    if (selecoesEspecificas) {
-        selecoes = selecoesEspecificas;
-    } else {
-        const usarFeminino = Math.random() > 0.5;
-        const genero = usarFeminino ? 'F' : 'M';
-        
-        selecoes = {
-            animalIdx: genero === 'F' 
-                ? Math.floor(Math.random() * palavras.animaisF.length)
-                : Math.floor(Math.random() * palavras.animaisM.length),
-            adjetivoIdx: genero === 'F'
-                ? Math.floor(Math.random() * palavras.adjetivosF.length)
-                : Math.floor(Math.random() * palavras.adjetivosM.length),
-            negacaoIdx: Math.floor(Math.random() * palavras.negações.length),
-            verboIdx: Math.floor(Math.random() * palavras.verbosPresente.length),
-            lugarIdx: Math.floor(Math.random() * palavras.lugares.length),
-            genero: genero
-        };
-    }
-    
+/**
+ * Generates a random selection of words based on gender
+ * 
+ * @returns 
+ */
+function generateSelectionOfWords() {
+
+    const genero = Math.random() > 0.5 ? 'F' : 'M';
+
+    let selected = {
+        animalIdx: genero === 'F'
+            ? Math.floor(Math.random() * palavras.animaisF.length)
+            : Math.floor(Math.random() * palavras.animaisM.length),
+        adjetivoIdx: genero === 'F'
+            ? Math.floor(Math.random() * palavras.adjetivosF.length)
+            : Math.floor(Math.random() * palavras.adjetivosM.length),
+        negacaoIdx: Math.floor(Math.random() * palavras.negações.length),
+        // todo: depending on the negation, we may need ot use verbs in the infinitive
+        verboIdx: Math.floor(Math.random() * palavras.verbosPresente.length),
+        lugarIdx: Math.floor(Math.random() * palavras.lugares.length),
+        genero: genero
+    };
+    return selected;
+}
+
+
+/**
+ * Generates a new ditado
+ * 
+ * @param {} selectionOfWords 
+ * @returns 
+ */
+function getDitadoFromSelectionOfWords(selectionOfWords) {
+
     // Recuperar palavras
-    const animal = selecoes.genero === 'F' 
-        ? palavras.animaisF[selecoes.animalIdx] 
+    const animal = selectionOfWords.genero === 'F'
+        ? palavras.animaisF[selecoes.animalIdx]
         : palavras.animaisM[selecoes.animalIdx];
+        
+    const adjetivo = selecoes.genero === 'F'
+        ? palavras.adjetivosF[selecoes.adjetivoIdx]
+        : palavras.adjetivosM[selecoes.adjetivoIdx];        
+    const negacao = palavras.negações[selecoes.negacaoIdx];
     
+    let verbo;
+    if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
+        verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
+    }
+
+
+    else {        verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
+    }           
+    const lugar = palavras.lugares[selecoes.lugarIdx];
+
+    return `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
+}       
+
+
+/** 
+ *  Generates a new ditado
+ *  
+ * @param {null} [selectionOfWords=null] 
+ * @returns { ditado: string, url: string, selecoes: object }   
+ */
+function gerarDitado(selectionOfWords = null) {
+
+    if (!selectionOfWords) {
+        selectionOfWords = generateSelectionOfWords();
+    }
+
+    const saying = getDitadoFromSelectionOfWords(selectionOfWords);
+
+    // Recuperar palavras
+    const animal = selecoes.genero === 'F'
+        ? palavras.animaisF[selecoes.animalIdx]
+        : palavras.animaisM[selecoes.animalIdx];
+
     const adjetivo = selecoes.genero === 'F'
         ? palavras.adjetivosF[selecoes.adjetivoIdx]
         : palavras.adjetivosM[selecoes.adjetivoIdx];
-    
+
     const negacao = palavras.negações[selecoes.negacaoIdx];
-    
+
     let verbo;
     if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
         verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
     } else {
         verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
     }
-    
+
     const lugar = palavras.lugares[selecoes.lugarIdx];
-    
+
     ditadoAtual = `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
-    
+
     // Gerar URL diretamente (não mostrar código isolado)
     const novaUrl = gerarUrlComDitado(selecoes);
     codigoAtual = extrairCodigoDaUrl(novaUrl);
-    
+
     ditadoDisplay.textContent = ditadoAtual;
-    
+
     adicionarAoHistorico(ditadoAtual, novaUrl);
-    
+
     return { ditado: ditadoAtual, url: novaUrl, selecoes };
 }
 
 // GERAR URL com código embutido
 function gerarUrlComDitado(selecoes) {
-    const codigo = codificarDitado(selecoes);
+    const codigo = encodeDitado(selecoes);
     return `${window.location.origin}${window.location.pathname}?c=${codigo}`;
 }
 
@@ -170,10 +217,10 @@ function adicionarAoHistorico(ditado, url) {
         timestamp: new Date().toLocaleTimeString(),
         codigo: extrairCodigoDaUrl(url)
     };
-    
+
     historico.unshift(item);
     if (historico.length > 5) historico.pop();
-    
+
     saveHistoricoToLocal();
     atualizarHistorico();
 }
@@ -223,7 +270,7 @@ function showStatus(message, type = 'info', duration = 3000) {
     statusMessage.textContent = message;
     statusMessage.style.color = type === 'error' ? '#7a1f1f' : (type === 'success' ? '#155724' : '#0b69b3');
     statusMessage.style.background = type === 'error' ? '#ffdede' : (type === 'success' ? '#d4edda' : '#e9f5ff');
-    
+
     clearTimeout(statusMessage._timeout);
     if (duration && duration > 0) {
         statusMessage._timeout = setTimeout(() => {
@@ -240,7 +287,7 @@ async function carregarDoGoogleSheets(url) {
             showStatus('URL do Google Sheets inválida', 'error', 4000);
             return false;
         }
-        
+
         const spreadsheetId = match[1];
         const sheets = [
             { key: 'animaisM', name: 'AnimaisM' },
@@ -252,16 +299,16 @@ async function carregarDoGoogleSheets(url) {
             { key: 'verbosInfinitivo', name: 'VerbosInfinitivo' },
             { key: 'lugares', name: 'Lugares' }
         ];
-        
+
         let totalCarregado = 0;
-        
+
         for (const sheet of sheets) {
             try {
                 const csvUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet.name)}`;
-                
+
                 const response = await fetch(csvUrl);
                 if (!response.ok) continue;
-                
+
                 const csvText = await response.text();
                 const linhas = csvText.split('\n')
                     .map(linha => {
@@ -273,7 +320,7 @@ async function carregarDoGoogleSheets(url) {
                         return partes[0] ? partes[0].trim() : '';
                     })
                     .filter(texto => texto.length > 0 && !texto.toLowerCase().includes('palavra'));
-                
+
                 if (linhas.length > 0) {
                     palavras[sheet.key] = linhas;
                     totalCarregado++;
@@ -282,7 +329,7 @@ async function carregarDoGoogleSheets(url) {
                 console.warn(`Erro ao carregar aba ${sheet.name}:`, error);
             }
         }
-        
+
         if (totalCarregado > 0) {
             showStatus(`✅ Carregadas palavras de ${totalCarregado} categorias`, 'success', 3000);
             return true;
@@ -290,7 +337,7 @@ async function carregarDoGoogleSheets(url) {
             showStatus('⚠️ Usando palavras locais', 'info', 4000);
             return false;
         }
-        
+
     } catch (error) {
         console.error('Erro ao carregar do Google Sheets:', error);
         showStatus('❌ Erro ao carregar. Usando palavras locais.', 'error', 4000);
@@ -302,37 +349,37 @@ async function carregarDoGoogleSheets(url) {
 function verificarCodigoNaUrl() {
     const params = new URLSearchParams(window.location.search);
     const codigo = params.get('c');
-    
+
     if (codigo) {
-        const selecoes = decodificarDitado(codigo);
+        const selecoes = decodeDitado(codigo);
         if (selecoes) {
-            // Gerar ditado a partir do código
-            const animal = selecoes.genero === 'F' 
-                ? palavras.animaisF[selecoes.animalIdx] 
+            // Generate Ditado from code
+            const animal = selecoes.genero === 'F'
+                ? palavras.animaisF[selecoes.animalIdx]
                 : palavras.animaisM[selecoes.animalIdx];
-            
+
             const adjetivo = selecoes.genero === 'F'
                 ? palavras.adjetivosF[selecoes.adjetivoIdx]
                 : palavras.adjetivosM[selecoes.adjetivoIdx];
-            
+
             const negacao = palavras.negações[selecoes.negacaoIdx];
-            
+
             let verbo;
             if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
                 verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
             } else {
                 verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
             }
-            
+
             const lugar = palavras.lugares[selecoes.lugarIdx];
-            
+
             ditadoAtual = `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
             ditadoDisplay.textContent = ditadoAtual;
-            
+
             // Atualizar URL para manter o código
             const novaUrl = `${window.location.origin}${window.location.pathname}?c=${codigo}`;
             window.history.replaceState({}, '', novaUrl);
-            
+
             showStatus('📨 Ditado carregado do link compartilhado', 'success', 3000);
             return true;
         } else {
@@ -347,16 +394,16 @@ function verificarCodigoNaUrl() {
 // Event Listeners
 gerarBtn.addEventListener('click', () => {
     const resultado = gerarDitado();
-    
+
     // Atualizar URL no navegador com o novo ditado
     window.history.pushState({}, '', `?c=${extrairCodigoDaUrl(resultado.url)}`);
-    
+
     showStatus('🎲 Novo ditado gerado!', 'success', 2000);
 });
 
 copiarBtn.addEventListener('click', () => {
     if (!ditadoAtual) return;
-    
+
     navigator.clipboard.writeText(ditadoAtual)
         .then(() => {
             showStatus('📝 Ditado copiado!', 'success', 1500);
@@ -369,7 +416,7 @@ copyUrlBtn.addEventListener('click', () => {
         showStatus('Gere um ditado primeiro!', 'error', 2000);
         return;
     }
-    
+
     const urlParaCopiar = window.location.href;
     navigator.clipboard.writeText(urlParaCopiar)
         .then(() => {
@@ -383,10 +430,10 @@ shareUrlBtn.addEventListener('click', () => {
         showStatus('Gere um ditado primeiro!', 'error', 2000);
         return;
     }
-    
+
     const urlParaCompartilhar = window.location.href;
     const textoParaCompartilhar = `Veja este ditado que gerei: "${ditadoAtual || 'Ditado popular engraçado'}"`;
-    
+
     // Tenta usar Web Share API se disponível
     if (navigator.share) {
         navigator.share({
@@ -408,7 +455,7 @@ historyList.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-url]');
     if (!btn) return;
     const url = btn.getAttribute('data-url');
-    
+
     navigator.clipboard.writeText(url)
         .then(() => {
             showStatus('🔗 Link do histórico copiado!', 'success', 2000);
