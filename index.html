@@ -1,275 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playground - laboratório experimental do Sérgio Rebelo.</title>
-    <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #4cc9f0;
-            --success: #38b000;
-            --warning: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --border: #dee2e6;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --card-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            color: var(--dark);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-            padding: 40px 20px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
-        }
-        
-        h1 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 3rem;
-            font-weight: 800;
-        }
-        
-        .subtitle {
-            color: var(--gray);
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto 25px;
-        }
-        
-        .tagline {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .tool-card {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .tool-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-header {
-            padding: 25px 25px 15px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-        
-        .icon-blue {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-        }
-
-        .icon-pink {
-            background: linear-gradient(135deg, var(--warning), #ff6b6b);
-            color: white;
-        }
-        
-        .icon-green {
-            background: linear-gradient(135deg, var(--success), #52b788);
-            color: white;
-        }
-        
-        .icon-purple {
-            background: linear-gradient(135deg, var(--secondary), #9d4edd);
-            color: white;
-        }
-        
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--dark);
-        }
-        
-        .card-description {
-            color: var(--gray);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        
-        .card-body {
-            padding: 20px 25px;
-            flex-grow: 1;
-        }
-        
-        .card-features {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-        
-        .card-features li {
-            padding: 6px 0;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .card-features li::before {
-            content: '✓';
-            color: var(--success);
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
-        .card-footer {
-            padding: 0 25px 25px;
-            margin-top: auto;
-        }
-        
-        .btn {
-            display: inline-block;
-            width: 100%;
-            padding: 12px 20px;
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: none;
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        
-        .btn-secondary:hover {
-            background: #5a08a0;
-        }
-        
-        .btn-accent {
-            background: var(--accent);
-        }
-        
-        .btn-accent:hover {
-            background: #3ab0d5;
-        }
-        
-        .coming-soon {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .coming-soon::after {
-            content: 'EM BREVE';
-            position: absolute;
-            top: 20px;
-            right: -30px;
-            background: var(--warning);
-            color: white;
-            padding: 5px 30px;
-            transform: rotate(45deg);
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--gray);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--border);
-            margin-top: 40px;
-        }
-        
-        @media (max-width: 768px) {
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-        }
-    </style>
+    <title>Playground: an experimental Lab by Sérgio Rebelo.</title>
+    <link rel="stylesheet" href="assets/css/base.css">
 </head>
+
 <body>
     <div class="container">
-        <header>
-            <h1>Playground do Sérgio</h1>
-            <p class="subtitle">Uma coleção de experiências, apps e ferramentas interativas.</p>
-            <p class="tagline">Explora, usa, experimenta e divirte-te!</p>
+        <header class="playground-hero">
+            <h1>Sérgio Rebelo’s Playground</h1>
+            <p class="subtitle">A small collection of experiments, tools and interactive mini apps.</p>
+            <p class="tagline">Explore, click around, break things, learn something and have fun.</p>
         </header>
-        
+
         <div class="tools-grid">
             <!-- Gerador de Queries ATS -->
             <div class="tool-card">
@@ -277,43 +23,52 @@
                     <div class="card-icon">
                         <i>🔍</i>
                     </div>
-                    <h2 class="card-title">Gerador de Queries ATS</h2>
-                    <p class="card-description">Cria pesquisas avançadas no Google para encontrar vagas de emprego em plataformas de recrutamento.</p>
-                </div>
+                    <h2 class="card-title">Gerador de Queries ATS
+                        <span class="lang-badge lang-pt">PT</span>
+                    </h2>      <p class="card-description">
+                Build search queries that make it easier to find relevant job postings across different recruiting platforms.
+            </p>
+            <p class="card-meta">
+                Interface in Portuguese. Results work on international job boards.
+            </p> </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Pesquisa em 20+ plataformas ATS</li>
-                        <li>Filtros por localização e tipo de trabalho</li>
-                        <li>Queries específicas para cada plataforma</li>
-                        <li>Interface intuitiva e personalizável</li>
+                <li>Search across multiple ATS job boards</li>
+                <li>Filters by location and job type</li>
+                <li>Platform specific query templates</li>
+                <li>Easy to use interface</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="job-search/ATS-query-generator.html" class="btn">Pesquisa Vagas de Emprego</a>
+                    <a href="minisites/job-search/ats-query-generator.html" class="btn">Open ATS query generator</a>
                 </div>
             </div>
-            
+
             <!-- Agenda de Eventos Tech -->
             <div class="tool-card coming-soon">
                 <div class="card-header">
                     <div class="card-icon">
                         <i>📅</i>
                     </div>
-                    <h2 class="card-title">Agenda de Eventos Tech</h2>
-                    <p class="card-description">Encontra os melhores eventos Tech. </p>
+                    <h2 class="card-title">Tech Events
+                        <span class="lang-badge lang-en">EN</span>
+
+                    </h2>
+                    <p class="card-description">Find information about the best Tech Events in Portugal and Europe.</p>
+                    <p class="card-meta">Interface in English.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Conferências, Meetups, Hackatons e mais</li>
-                        <li>Pesquisa por data, localização e preço</li>
-                        <li>Curadoria com seleção de eventos mais relevantes</li>
-                        <li>Mais notícias em breve... </li>
+                        <li>Conferences, Meetups, Hackatons and more</li>
+                        <li>Search events by date, location or price</li>
+                        <li>Curated selection of events</li>
+                        <li>News, reviews and articles</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a class="btn"  style="background: var(--gray);">Em Construção</a>
+                    <a class="btn" style="background: var(--gray);">Soon</a>
                 </div>
-            </div>        
+            </div>
 
             <!-- Gerador de Ditados -->
             <div class="tool-card coming-soon">
@@ -333,95 +88,51 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a class="btn"  style="background: var(--gray);">Em Construção</a>
+                    <a class="btn" style="background: var(--gray);">Soon</a>
                 </div>
             </div>
-            
-            <!-- Analisador de Texto -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon icon-text">
-                        <i>📊</i>
-                    </div>
-                    <h2 class="card-title">Analisador de Texto</h2>
-                    <p class="card-description">Analise textos para estatísticas, legibilidade e otimização para SEO.</p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Contagem de palavras e caracteres</li>
-                        <li>Análise de densidade de palavras-chave</li>
-                        <li>Pontuação de legibilidade</li>
-                        <li>Recomendações de melhoria</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Em Breve</a>
-                </div>
-            </div>
-            
-            <!-- Gerador de Palete de Cores-->
+
+            <!-- Color Palete Generator -->
             <div class="tool-card coming-soon">
                 <div class="card-header">
                     <div class="card-icon icon-calc">
                         <i>🎨</i>
                     </div>
-                    <h2 class="card-title">Gerador de Paleta de Cores</h2>
-                    <p class="card-description">Cria, explora, experimenta e exporta paletas de cores para os teus projetos.</p>
+                    <h2 class="card-title">Color Palette Generator</h2>
+                    <p class="card-description">Create, try and export color palettes for your projects.</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Geração de paletas complementares</li>
-                        <li>Análise de Contraste e Acessibilidade</li>
-                        <li>Exportação em múltiplos formatos</li>
-                        <li>Biblioteca de paletas populares</li>
+                        <li>Generation of complementar palettes</li>
+                        <li>Contrast and Accessibility analysis</li>
+                        <li>Export in multiple formats</li>
+                        <li>Library with popular palettes</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Em Breve</a>
+                    <a class="btn" style="background: var(--gray);">Soon</a>
                 </div>
             </div>
-            
-            <!-- Conversor de Unidades CSS -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon icon-calc">
-                        <i>📐</i>
-                    </div>
-                    <h2 class="card-title">Conversor de Unidades CSS</h2>
-                    <p class="card-description">Converte entre diferentes unidades de medida CSS de forma rápida.</p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Conversão entre px, rem, em, %</li>
-                        <li>Cálculo baseado em contexto</li>
-                        <li>Visualização em tempo real</li>
-                        <li>Presets para sistemas de design</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Em Breve</a>
-                </div>
-            </div>
-            
-            <!-- Validador de JSON -->
+
+            <!-- JSON validator -->
             <div class="tool-card coming-soon">
                 <div class="card-header">
                     <div class="card-icon icon-text">
                         <i>{} </i>
                     </div>
-                    <h2 class="card-title">Validador e Formatador JSON</h2>
-                    <p class="card-description">Valida, formata e analisa estruturas de dados JSON.</p>
+                    <h2 class="card-title">JSON validator and formatter</h2>
+                    <p class="card-description">Evaluates, analises and formats data structures in JSON. </p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Validação de sintaxe JSON</li>
-                        <li>Formatação e minificação</li>
-                        <li>Análise de estrutura de dados</li>
-                        <li>Conversão para outros formatos</li>
+                        <li>JSON sintax validation/li>
+                        <li>Format and minifies</li>
+                        <li>Analysis of data structures</li>
+                        <li>Converts to other formats</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Em Breve</a>
+                    <a class="btn" style="background: var(--gray);">Soon</a>
                 </div>
             </div>
 
@@ -432,48 +143,48 @@
                         <i>🌐</i>
                     </div>
                     <h2 class="card-title">API Request Builder</h2>
-                    <p class="card-description">Cliente HTTP para testar APIs.</p>
+                    <p class="card-description">HTTP Client to test your API</p>
                 </div>
                 <div class="card-body">
                     <ul class="card-features">
-                        <li>Suporte a interfaces REST</li>
-                        <li>Privacidade de dados</li>
-                        <li>Histórico local</li>
+                        <li>Supports all REST interfaces</li>
+                        <li>Data Privacy </li>
+                        <li>Local history</li>
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn" style="background: var(--gray);">Em Breve</a>
+                    <a href="#" class="btn" style="background: var(--gray);">Soon</a>
                 </div>
             </div>
         </div>
-        
+
         <div class="footer">
-            <p>Criado com ❤️ por <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
+            <p>Made with ❤️ by <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
         </div>
     </div>
 
     <script>
         // Adicionar efeitos interativos
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cards = document.querySelectorAll('.tool-card');
-            
+
             cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
+                card.addEventListener('mouseenter', function () {
                     this.style.transform = 'translateY(-8px)';
                 });
-                
-                card.addEventListener('mouseleave', function() {
+
+                card.addEventListener('mouseleave', function () {
                     this.style.transform = 'translateY(0)';
                 });
             });
-            
+
             // Adicionar animação de entrada para os cards
             const observerOptions = {
                 threshold: 0.1,
                 rootMargin: '0px 0px -50px 0px'
             };
-            
-            const observer = new IntersectionObserver(function(entries) {
+
+            const observer = new IntersectionObserver(function (entries) {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = '1';
@@ -481,7 +192,7 @@
                     }
                 });
             }, observerOptions);
-            
+
             cards.forEach(card => {
                 card.style.opacity = '0';
                 card.style.transform = 'translateY(20px)';
@@ -491,4 +202,5 @@
         });
     </script>
 </body>
+
 </html>
