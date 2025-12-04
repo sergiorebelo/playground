@@ -1,0 +1,47 @@
+<div class="footer">
+  {% assign lang = page.lang | default: site.lang | default: 'en' %}
+
+  {% if lang == 'pt' %}
+    <p>
+      Criado com ❤️ por
+      <a href="https://sergiorebelo.com">Sérgio Rebelo</a>.
+    </p>
+
+    {% if page.homepage %}
+      <p>
+        <small>
+          Este é o ponto de partida para todas as experiências e mini apps.
+        </small>
+      </p>
+    {% else %}
+      <p>
+        <small>
+          Voltar ao
+          <a href="{{ '/' | relative_url }}">Playground</a>.
+        </small>
+      </p>
+    {% endif %}
+
+  {% else %}
+    <p>
+      Built with ❤️ by
+      <a href="https://sergiorebelo.com">Sérgio Rebelo</a>.
+    </p>
+
+    {% if page.homepage %}
+      <p>
+        <small>
+          This is the starting point for all experiments and mini apps.
+        </small>
+      </p>
+    {% else %}
+      <p>
+        <small>
+          Back to the
+          <a href="{{ '/' | relative_url }}">Playground</a>.
+        </small>
+      </p>
+    {% endif %}
+
+  {% endif %}
+</div>

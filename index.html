@@ -1,209 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: playground
+title: Playground
+homepage: true
+lang: en
+hero_title: "Sérgio Rebelo’s Playground"
+subtitle: "A small collection of experiments, tools and interactive mini apps."
+tagline: "Explore, click around, break things, learn something and have fun."
+---
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playground: an experimental Lab by Sérgio Rebelo.</title>
-    <link rel="stylesheet" href="assets/css/base.css">
-</head>
-
-<body>
-    <div class="container">
-        <header class="playground-hero">
-            <h1>Sérgio Rebelo’s Playground</h1>
-            <p class="subtitle">A small collection of experiments, tools and interactive mini apps.</p>
-            <p class="tagline">Explore, click around, break things, learn something and have fun.</p>
-        </header>
-
-        <div class="tools-grid">
-            <!-- Gerador de Queries ATS -->
-            <div class="tool-card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i>🔍</i>
-                    </div>
-                    <h2 class="card-title">Gerador de Queries ATS
-                        <span class="lang-badge lang-pt">PT</span>
-                    </h2>
-                    <p class="card-description">
-                        Build search queries that make it easier to find relevant job postings across different
-                        recruiting platforms.
-                    </p>
-                    <p class="card-meta">
-                        Interface in Portuguese. Results work on international job boards.
-                    </p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Search across multiple ATS job boards</li>
-                        <li>Filters by location and job type</li>
-                        <li>Platform specific query templates</li>
-                        <li>Easy to use interface</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a href="minisites/job-search/ats-query-generator.html" class="btn btn-primary">Open ATS query generator</a>
-                </div>
+<div class="tools-grid">
+    <!-- Gerador de Queries ATS -->
+    <div class="tool-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <i>🔍</i>
             </div>
-
-            <!-- Agenda de Eventos Tech -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i>📅</i>
-                    </div>
-                    <h2 class="card-title">Tech Events
-                        <span class="lang-badge lang-en">EN</span>
-
-                    </h2>
-                    <p class="card-description">Find information about the best Tech Events in Portugal and Europe.</p>
-                    <p class="card-meta">Interface in English.</p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Conferences, Meetups, Hackatons and more</li>
-                        <li>Search events by date, location or price</li>
-                        <li>Curated selection of events</li>
-                        <li>News, reviews and articles</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-                </div>
-            </div>
-
-            <!-- Gerador de Ditados -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i>🧠</i>
-                    </div>
-                    <h2 class="card-title">Gerador de Ditados</h2>
-                    <p class="card-description">Gera e partilha "ditados" originais. </p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Gera Ditados originais com base numa fórmula</li>
-                        <li>Grande lista de palavras</li>
-                        <li>Concordância de género e tempos verbais</li>
-                        <li>Geração de códigos únicos para partilhar</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Soon</a>
-                </div>
-            </div>
-
-            <!-- Color Palete Generator -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon icon-calc">
-                        <i>🎨</i>
-                    </div>
-                    <h2 class="card-title">Color Palette Generator</h2>
-                    <p class="card-description">Create, try and export color palettes for your projects.</p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Generation of complementar palettes</li>
-                        <li>Contrast and Accessibility analysis</li>
-                        <li>Export in multiple formats</li>
-                        <li>Library with popular palettes</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Soon</a>
-                </div>
-            </div>
-
-            <!-- JSON validator -->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon icon-text">
-                        <i>{} </i>
-                    </div>
-                    <h2 class="card-title">JSON validator and formatter</h2>
-                    <p class="card-description">Evaluates, analises and formats data structures in JSON. </p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>JSON sintax validation/li>
-                        <li>Format and minifies</li>
-                        <li>Analysis of data structures</li>
-                        <li>Converts to other formats</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a class="btn" style="background: var(--gray);">Soon</a>
-                </div>
-            </div>
-
-            <!-- API Request Builder-->
-            <div class="tool-card coming-soon">
-                <div class="card-header">
-                    <div class="card-icon icon-text">
-                        <i>🌐</i>
-                    </div>
-                    <h2 class="card-title">API Request Builder</h2>
-                    <p class="card-description">HTTP Client to test your API</p>
-                </div>
-                <div class="card-body">
-                    <ul class="card-features">
-                        <li>Supports all REST interfaces</li>
-                        <li>Data Privacy </li>
-                        <li>Local history</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn" style="background: var(--gray);">Soon</a>
-                </div>
-            </div>
+            <h2 class="card-title">Gerador de Queries ATS
+                <span class="lang-badge lang-pt">PT</span>
+            </h2>
+            <p class="card-description">
+                Build search queries that make it easier to find relevant job postings across different
+                recruiting platforms.
+            </p>
+            <p class="card-meta">
+                Interface in Portuguese. </br>Results work on international job boards.
+            </p>
         </div>
-
-        <div class="footer">
-            <p>Made with ❤️ by <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>Search across multiple ATS job boards</li>
+                <li>Filters by location and job type</li>
+                <li>Platform specific query templates</li>
+                <li>Easy to use interface</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a href="minisites/job-search/ats-query-generator.html" class="btn btn-primary">Open ATS query generator</a>
         </div>
     </div>
 
-    <script>
-        // Adicionar efeitos interativos
-        document.addEventListener('DOMContentLoaded', function () {
-            const cards = document.querySelectorAll('.tool-card');
+    <!-- Agenda de Eventos Tech -->
+    <div class="tool-card coming-soon">
+        <div class="card-header">
+            <div class="card-icon">
+                <i>📅</i>
+            </div>
+            <h2 class="card-title">Tech Events
+                <span class="lang-badge lang-en">EN</span>
 
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function () {
-                    this.style.transform = 'translateY(-8px)';
-                });
+            </h2>
+            <p class="card-description">Find information about the best Tech Events in Portugal and Europe.</p>
+            <p class="card-meta">Interface in English.</p>
+        </div>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>Conferences, Meetups, Hackatons and more</li>
+                <li>Search events by date, location or price</li>
+                <li>Curated selection of events</li>
+                <li>News, reviews and articles</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
+        </div>
+    </div>
 
-                card.addEventListener('mouseleave', function () {
-                    this.style.transform = 'translateY(0)';
-                });
-            });
+    <!-- Gerador de Ditados -->
+    <div class="tool-card coming-soon">
+        <div class="card-header">
+            <div class="card-icon">
+                <i>🧠</i>
+            </div>
+            <h2 class="card-title">Gerador de Ditados</h2>
+            <p class="card-description">Gera e partilha "ditados" originais. </p>
+        </div>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>Gera Ditados originais com base numa fórmula</li>
+                <li>Grande lista de palavras</li>
+                <li>Concordância de género e tempos verbais</li>
+                <li>Geração de códigos únicos para partilhar</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
+        </div>
+    </div>
 
-            // Adicionar animação de entrada para os cards
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+    <!-- Color Palete Generator -->
+    <div class="tool-card coming-soon">
+        <div class="card-header">
+            <div class="card-icon icon-calc">
+                <i>🎨</i>
+            </div>
+            <h2 class="card-title">Color Palette Generator</h2>
+            <p class="card-description">Create, try and export color palettes for your projects.</p>
+        </div>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>Generation of complementar palettes</li>
+                <li>Contrast and Accessibility analysis</li>
+                <li>Export in multiple formats</li>
+                <li>Library with popular palettes</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
+        </div>
+    </div>
 
-            const observer = new IntersectionObserver(function (entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
+    <!-- JSON validator -->
+    <div class="tool-card coming-soon">
+        <div class="card-header">
+            <div class="card-icon icon-text">
+                <i>{} </i>
+            </div>
+            <h2 class="card-title">JSON validator and formatter</h2>
+            <p class="card-description">Evaluates, analises and formats data structures in JSON. </p>
+        </div>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>JSON sintax validation/li>
+                <li>Format and minifies</li>
+                <li>Analysis of data structures</li>
+                <li>Converts to other formats</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
+        </div>
+    </div>
 
-            cards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-        });
-    </script>
+    <!-- API Request Builder-->
+    <div class="tool-card coming-soon">
+        <div class="card-header">
+            <div class="card-icon icon-text">
+                <i>🌐</i>
+            </div>
+            <h2 class="card-title">API Request Builder</h2>
+            <p class="card-description">HTTP Client to test your API</p>
+        </div>
+        <div class="card-body">
+            <ul class="card-features">
+                <li>Supports all REST interfaces</li>
+                <li>Data Privacy </li>
+                <li>Local history</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/tool-cards.js" defer></script>
+
+
 </body>
 
 </html>

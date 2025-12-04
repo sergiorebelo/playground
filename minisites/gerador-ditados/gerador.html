@@ -1,72 +1,59 @@
-<!-- gerador.html - ATUALIZADO -->
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Ditados Populares</title>
-    <link rel="stylesheet" href="gerador.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🧠 Gerador de Ditados Populares</h1>
-            <p>Gera ditados únicos e compartilha o link com este gerador de Ditados Populares inspirado no <a href="https://www.instagram.com/p/DRMwN4IEW7T/?img_index=1&igsh=MWNrbWNtc3lnaGhzNg%3D%3D" >reel</a> da <a href="https://www.instagram.com/estheralencardejesus/">Esther</a>.</p>
+---
+layout: minisite
+title: Gerador de Ditados Populares
+lang: pt
+homepage: false
+subtitle: Cria ditados populares aleatórios e partilha as tuas criações. Inspirado no reel da Esther!
+description: Ferramenta divertida para gerar ditados populares únicos e compartilhar links personalizados com amigos e familiares.
+keywords: [gerador de ditados, ditados populares, frases aleatórias, compartilhamento de links, entretenimento]
+---
+<div class="app-container">
+    <div class="generator">
+        <div class="ditado-display" id="ditadoDisplay">
+            Clica em "Gerar Ditado" para começar
         </div>
-        
-        <div class="content">
-            <div class="generator">
-                <div class="ditado-display" id="ditadoDisplay">
-                    Clica em "Gerar Ditado" para começar
-                </div>
-                
-                <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
-                
-                <div class="share-buttons">
-                    <button class="btn btn-primary" id="gerarBtn">
-                        🎲 Gerar Ditado
-                    </button>
-                    <button class="btn btn-secondary" id="copiarBtn">
-                        📝 Copiar Texto
-                    </button>
-                    <button class="btn btn-success" id="copyUrlBtn">
-                        🔗 Copiar Link
-                    </button>
-                    <button class="btn btn-success" id="shareUrlBtn">
-                        📤 Compartilhar
-                    </button>
-                </div>
-                
-                <div class="url-info">
-                    <p><small>O link atual já contém o teu ditado. Compartilha esta página!</small></p>
-                </div>
-            </div>
-            
-            <div class="config-section">
-                <p><strong>Gerador de ditados populares</strong></p>
-                <p>Cada link gera o mesmo ditado.</p>
-                <p>Compartilha o link para mostrar o teu ditado a outras pessoas!</p>
-                
-                <div class="reload-row">
-                    <p><small>As palavras são carregadas automaticamente de uma spreadsheet do Google.</small></p>
-                    <button class="btn btn-secondary" id="reloadSheetsBtn">🔄 Recarregar palavras</button>
-                </div>
-            </div>
-            
-            <div class="history">
-                <h2>📜 Histórico Recente</h2>
-                <div class="history-list" id="historyList">
-                    <!-- Histórico será preenchido via JavaScript -->
-                </div>
-            </div>
+
+        <div id="statusMessage" class="status-message" role="status" aria-live="polite"></div>
+
+        <div class="share-buttons">
+            <button class="btn btn-primary" id="gerarBtn">
+                🎲 Gerar Ditado
+            </button>
+            <button class="btn btn-secondary" id="copiarBtn">
+                📝 Copiar Texto
+            </button>
+            <button class="btn btn-success" id="copyUrlBtn">
+                🔗 Copiar Link
+            </button>
+            <button class="btn btn-success" id="shareUrlBtn">
+                📤 Compartilhar
+            </button>
         </div>
-        
-        <div class="footer">
-            <p>Gerador de ditados populares criado com ❤️ por <a href="http://sergiorebelo.com">Sérgio Rebelo</a>.</p>
-            <p><small>Para mais ferramentas, visita o <a href="http://sergiorebelo.org">Playground do Sérgio</a>!</small></p>
+
+        <div class="url-info">
+            <p><small>O link atual já contém o teu ditado. Compartilha esta página!</small></p>
+        </div>
+
+    </div>
+
+    <div class="config-section">
+        <p><strong>Gerador de ditados populares</strong></p>
+        <p>Cada link gera o mesmo ditado.</p>
+        <p>Compartilha o link para mostrar o teu ditado a outras pessoas!</p>
+
+        <div class="reload-row">
+            <p><small>As palavras são carregadas automaticamente de uma spreadsheet do Google.</small></p>
+            <button class="btn btn-secondary" id="reloadSheetsBtn">🔄 Recarregar palavras</button>
         </div>
     </div>
 
-    <script src="gerador.js" defer></script>
-</body>
-</html>
+    <div class="history">
+        <h2>📜 Histórico Recente</h2>
+        <div class="history-list" id="historyList">
+            <!-- Histórico será preenchido via JavaScript -->
+        </div>
+    </div>
+
+</div>
+
+<script src="gerador.js" defer></script>

@@ -50,6 +50,7 @@ body {
 
 header,
 .header {
+    text-align: center;
     background: white;
     border-radius: var(--radius-xl);
     padding: 30px 24px;
@@ -228,26 +229,30 @@ header h1,
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    background: #e5e7eb; /* fallback neutro */
+    background: #e5e7eb;
+    /* fallback neutro */
     color: #111827;
 }
 
 /* Badge PT */
 .lang-badge.lang-pt {
-    background: rgba(239, 68, 68, 0.12); /* vermelho suave */
+    background: rgba(239, 68, 68, 0.12);
+    /* vermelho suave */
     color: #b91c1c;
     border: 1px solid rgba(185, 28, 28, 0.25);
 }
 
 /* Badge EN */
 .lang-badge.lang-en {
-    background: rgba(59, 130, 246, 0.12); /* azul suave */
+    background: rgba(59, 130, 246, 0.12);
+    /* azul suave */
     color: #1d4ed8;
     border: 1px solid rgba(29, 78, 216, 0.25);
 }
 
 /* Meta text (descrição pequena por baixo do card-title) */
 .card-meta {
+    background: rgba(129, 171, 240, 0.12);
     margin-top: 4px;
     font-size: 0.78rem;
     color: var(--gray, #6b7280);
@@ -529,6 +534,10 @@ button,
     align-items: center;
     justify-content: center;
     gap: 6px;
+
+}
+
+.btn {
     width: 100%;
     text-align: center;
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+{% include html-head.html %}
+<body>
+  <div class="container">
+    <header class="playground-hero">
+      <h1>{{ page.hero_title | default: site.title }}</h1>
+      <p class="subtitle">
+        {{ page.subtitle | default: site.description }}
+      </p>
+      {% if page.tagline %}
+        <p class="tagline">{{ page.tagline }}</p>
+      {% endif %}
+    </header>
+
+    {{ content }}
+
+    {% include footer.html %}
+  </div>
+</body>
+</html>

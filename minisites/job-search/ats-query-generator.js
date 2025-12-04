@@ -1,0 +1,314 @@
+// Configuração das ATS com queries específicas
+const atsPlatforms = {
+    'workable.com': {
+        name: 'Workable',
+        query: 'site:workable.com',
+        example: 'https://company-name.workable.com/'
+    },
+    'jobs.lever.co': {
+        name: 'Lever',
+        query: 'site:jobs.lever.co',
+        example: 'https://jobs.lever.co/company-name/'
+    },
+    'boards.greenhouse.io': {
+        name: 'Greenhouse',
+        query: 'site:boards.greenhouse.io',
+        example: 'https://boards.greenhouse.io/company-name/'
+    },
+    'jobs.ashbyhq.com': {
+        name: 'Ashby',
+        query: 'site:jobs.ashbyhq.com',
+        example: 'https://jobs.ashbyhq.com/company-name/'
+    },
+    'bamboohr.com': {
+        name: 'BambooHR',
+        query: 'site:bamboohr.com',
+        example: 'https://company-name.bamboohr.com/careers/'
+    },
+    'jobs.jobvite.com': {
+        name: 'Jobvite',
+        query: 'site:jobs.jobvite.com',
+        example: 'https://jobs.jobvite.com/company-name/'
+    },
+    'teamtailor.com': {
+        name: 'TeamTailor',
+        query: 'site:teamtailor.com',
+        example: 'https://careers.company-name.com/'
+    },
+    'apply.workable.com': {
+        name: 'Workable (Apply)',
+        query: 'site:apply.workable.com',
+        example: 'https://apply.workable.com/company-name/'
+    },
+    'careers-page.workable.com': {
+        name: 'Workable (Careers)',
+        query: 'site:careers-page.workable.com',
+        example: 'https://careers-page.workable.com/'
+    },
+    'jobs.recruitee.com': {
+        name: 'Recruitee',
+        query: 'site:jobs.recruitee.com',
+        example: 'https://company-name.recruitee.com/'
+    },
+    'ismartrecruit.com': {
+        name: 'iSmartRecruit',
+        query: 'site:ismartrecruit.com',
+        example: 'https://company-name.ismartrecruit.com/'
+    },
+    'oleeo.com': {
+        name: 'Oleeo',
+        query: 'site:oleeo.com',
+        example: 'https://company-name.oleeo.com/'
+    },
+    'pinpointhq.com': {
+        name: 'Pinpoint',
+        query: 'site:pinpointhq.com',
+        example: 'https://company-name.pinpointhq.com/'
+    },
+    'zoho.com/recruit': {
+        name: 'Zoho Recruit',
+        query: 'site:zoho.com/recruit',
+        example: 'https://zoho.com/recruit/company-name/'
+    },
+    'jazzhr.com': {
+        name: 'JazzHR',
+        query: 'site:jazzhr.com',
+        example: 'https://company-name.jazzhr.com/'
+    },
+    'rippling.com': {
+        name: 'Rippling',
+        query: 'site:rippling.com',
+        example: 'https://company-name.rippling.com/'
+    },
+    'manatal.com': {
+        name: 'Manatal',
+        query: 'site:manatal.com',
+        example: 'https://company-name.manatal.com/'
+    },
+    'recruitcrm.io': {
+        name: 'RecruitCRM',
+        query: 'site:recruitcrm.io',
+        example: 'https://company-name.recruitcrm.io/'
+    },
+    'careers.successfactors.com': {
+        name: 'SAP SuccessFactors',
+        query: 'site:careers.successfactors.com',
+        example: 'https://careers.successfactors.com/company-name/'
+    },
+    'taleo.net': {
+        name: 'Taleo',
+        query: 'site:taleo.net',
+        example: 'https://tas-posting.taleo.net/'
+    },
+    'myworkdayjobs.com': {
+        name: 'Workday',
+        query: 'site:myworkdayjobs.com',
+        example: 'https://company-name.myworkdayjobs.com/'
+    },
+    'bullhornstaffing.com': {
+        name: 'Bullhorn',
+        query: 'site:bullhornstaffing.com',
+        example: 'https://company-name.bullhornstaffing.com/'
+    }
+};
+
+// Configuração das roles
+const roleConfig = {
+    'ux-designer': ['"UX Designer"', '"UX/UI Designer"', '"Product Designer"', '"User Experience Designer"', '"User Researcher"'],
+    'frontend': ['"Frontend Developer"', '"Front-end Developer"', '"React Developer"', '"JavaScript Developer"', '"UI Developer"'],
+    'backend': ['"Backend Developer"', '"Back-end Developer"', '"Node.js Developer"', '"Python Developer"', '"Java Developer"'],
+    'fullstack': ['"Full Stack Developer"', '"Full-Stack Developer"', '"Software Engineer"', '"Web Developer"'],
+    'eng-manager': ['"Engineering Manager"', '"Tech Lead"', '"Development Manager"', '"Technical Manager"'],
+    'product-manager': ['"Product Manager"', '"Product Owner"', '"Technical Product Manager"', '"Senior Product Manager"'],
+    'data-scientist': ['"Data Scientist"', '"Machine Learning Engineer"', '"AI Engineer"', '"Data Analyst"']
+};
+
+// Elementos DOM
+const roleSelect = document.getElementById('role');
+const customRoleInput = document.getElementById('custom-role');
+const locationTypeSelect = document.getElementById('location-type');
+const customLocationInput = document.getElementById('custom-location');
+const atsPlatformsContainer = document.getElementById('ats-platforms');
+const timeFilterSelect = document.getElementById('time-filter');
+const generateBtn = document.getElementById('generate-btn');
+const resetBtn = document.getElementById('reset-btn');
+const copyBtn = document.getElementById('copy-btn');
+const testBtn = document.getElementById('test-btn');
+const selectAllBtn = document.getElementById('select-all-ats');
+const deselectAllBtn = document.getElementById('deselect-all-ats');
+const generatedQuery = document.getElementById('generated-query');
+const queryLength = document.getElementById('query-length');
+const platformCount = document.getElementById('platform-count');
+const searchPreview = document.getElementById('search-preview');
+
+// Inicializar as checkboxes das ATS
+function initializeATSPlatforms() {
+    atsPlatformsContainer.innerHTML = '';
+    Object.entries(atsPlatforms).forEach(([key, platform]) => {
+        const checkboxItem = document.createElement('div');
+        checkboxItem.className = 'checkbox-item';
+        checkboxItem.innerHTML = `
+                    <input type="checkbox" id="ats-${key}" value="${key}" checked>
+                    <label for="ats-${key}">${platform.name}</label>
+                `;
+        atsPlatformsContainer.appendChild(checkboxItem);
+    });
+}
+
+// Event Listeners
+roleSelect.addEventListener('change', function () {
+    customRoleInput.classList.toggle('hidden', this.value !== 'custom');
+});
+
+locationTypeSelect.addEventListener('change', function () {
+    const isSpecific = this.value === 'specific' || this.value === 'hybrid';
+    customLocationInput.style.display = isSpecific ? 'block' : 'none';
+});
+
+selectAllBtn.addEventListener('click', function () {
+    document.querySelectorAll('#ats-platforms input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
+    });
+});
+
+deselectAllBtn.addEventListener('click', function () {
+    document.querySelectorAll('#ats-platforms input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
+});
+
+generateBtn.addEventListener('click', generateQuery);
+resetBtn.addEventListener('click', resetForm);
+copyBtn.addEventListener('click', copyQuery);
+testBtn.addEventListener('click', testQuery);
+
+// Funções
+function generateQuery() {
+    const role = roleSelect.value;
+    const customRole = customRoleInput.value;
+    const locationType = locationTypeSelect.value;
+    const customLocation = customLocationInput.value;
+    const selectedATS = Array.from(document.querySelectorAll('#ats-platforms input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+    const timeFilter = timeFilterSelect.value;
+
+    // Construir parte do cargo
+    let roleQuery;
+    if (role === 'custom' && customRole) {
+        roleQuery = `"${customRole}"`;
+    } else if (roleConfig[role]) {
+        roleQuery = roleConfig[role].join(' OR ');
+    } else {
+        roleQuery = '"UX Designer" OR "Product Designer"';
+    }
+
+    // Construir parte da localização
+    let locationQuery = '';
+    if (locationType === 'remote') {
+        locationQuery = '("remote" OR "Remote" OR "remoto" OR "teletrabalho")';
+    } else if ((locationType === 'specific' || locationType === 'hybrid') && customLocation) {
+        const locationParts = customLocation.split(',').map(part => part.trim());
+        let locationTerms = [];
+
+        locationParts.forEach(part => {
+            locationTerms.push(`"${part}"`);
+            if (locationType === 'hybrid') {
+                locationTerms.push(`"${part} hybrid"`, `"${part} remote"`);
+            }
+        });
+
+        locationQuery = `(${locationTerms.join(' OR ')})`;
+    }
+
+    // Construir parte das ATS
+    let atsQuery = '';
+    if (selectedATS.length > 0) {
+        const atsQueries = selectedATS.map(atsKey => atsPlatforms[atsKey].query);
+        atsQuery = atsQueries.join(' OR ');
+    } else {
+        atsQuery = 'site:boards.greenhouse.io OR site:jobs.lever.co';
+    }
+
+    // Construir filtro de tempo
+    const timeQuery = timeFilter !== 'any' ? `&tbs=qdr:${timeFilter}` : '';
+
+    // Montar query final - formato otimizado para ATS
+    let finalQuery = `${roleQuery} ${locationQuery} ${atsQuery}${timeQuery}`;
+
+    // Limpar espaços extras
+    finalQuery = finalQuery.replace(/\s+/g, ' ').trim();
+
+    // Atualizar UI
+    generatedQuery.value = finalQuery;
+    queryLength.textContent = `${finalQuery.length} caracteres`;
+    platformCount.textContent = `${selectedATS.length} plataforma(s) ATS`;
+
+    // Atualizar pré-visualização
+    updatePreview(role, customRole, locationType, customLocation, selectedATS.length);
+}
+
+function updatePreview(role, customRole, locationType, customLocation, atsCount) {
+    let roleText = '';
+    if (role === 'custom' && customRole) {
+        roleText = customRole;
+    } else {
+        roleText = roleSelect.options[roleSelect.selectedIndex].text;
+    }
+
+    let locationText = '';
+    if (locationType === 'remote') {
+        locationText = ' | Remoto';
+    } else if (locationType === 'hybrid' && customLocation) {
+        locationText = ` | Híbrido em ${customLocation}`;
+    } else if (locationType === 'specific' && customLocation) {
+        locationText = ` | ${customLocation}`;
+    }
+
+    const timeText = timeFilterSelect.options[timeFilterSelect.selectedIndex].text.toLowerCase();
+
+    searchPreview.innerHTML = `
+                <strong>Pesquisa ATS por:</strong> ${roleText}${locationText}<br>
+                <strong>Publicadas:</strong> ${timeText}<br>
+                <strong>Plataformas ATS:</strong> ${atsCount} selecionada(s)<br>
+                <strong>Tipo:</strong> Query específica por plataforma ATS
+            `;
+}
+
+function resetForm() {
+    roleSelect.value = 'ux-designer';
+    customRoleInput.classList.add('hidden');
+    customRoleInput.value = '';
+    locationTypeSelect.value = 'remote';
+    customLocationInput.value = '';
+    customLocationInput.style.display = 'none';
+    document.querySelectorAll('#ats-platforms input[type="checkbox"]').forEach(cb => {
+        cb.checked = true;
+    });
+    timeFilterSelect.value = 'w';
+    generatedQuery.value = '';
+    queryLength.textContent = '0 caracteres';
+    platformCount.textContent = '0 plataformas ATS';
+    searchPreview.textContent = 'A pré-visualização aparecerá aqui após gerar a query.';
+}
+
+function copyQuery() {
+    if (generatedQuery.value) {
+        generatedQuery.select();
+        document.execCommand('copy');
+        copyBtn.textContent = 'Copiado!';
+        setTimeout(() => {
+            copyBtn.textContent = 'Copiar Query';
+        }, 2000);
+    }
+}
+
+function testQuery() {
+    if (generatedQuery.value) {
+        const encodedQuery = encodeURIComponent(generatedQuery.value);
+        window.open(`https://www.google.com/search?q=${encodedQuery}`, '_blank');
+    }
+}
+
+// Inicializar
+initializeATSPlatforms();
+resetForm();
