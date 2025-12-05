@@ -61,8 +61,8 @@ keywords: [gerador de queries, pesquisa de emprego, ATS]
         </div>
 
         <div class="buttons">
-            <button id="generate-btn" class="btn-primary">Gerar Query ATS</button>
-            <button id="reset-btn" class="btn-secondary">Limpar</button>
+            <button id="generate-btn" class="btn btn-primary">Gerar Query ATS</button>
+            <button id="reset-btn" class="btn btn-secondary">Limpar</button>
         </div>
 
     </div>
@@ -79,8 +79,8 @@ keywords: [gerador de queries, pesquisa de emprego, ATS]
         </div>
 
         <div class="buttons">
-            <button id="copy-btn" class="btn btn-success">Copiar Query</button>
-            <button id="test-btn" class="btn btn-primary">Testar no Google</button>
+            <button id="copy-btn" class="btn-success">Copiar Query</button>
+            <button id="test-btn" class="btn-primary">Testar no Google</button>
         </div>
 
         <div class="preview">
@@ -91,4 +91,8 @@ keywords: [gerador de queries, pesquisa de emprego, ATS]
 
 </div>
 
-<script src="ats-query-generator.html" defer></script>
+<script src="ats-query-generator.html" defer>
+// Inicializar
+initializeATSPlatforms();
+resetForm();
+</script>
