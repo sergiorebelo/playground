@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+
 {% include html-head.html %}
+
 <body>
   <div class="container">
     <header class="header">
       <h1>{{ page.title }}</h1>
       {% if page.subtitle %}
-        <p class="subtitle">{{ page.subtitle }}</p>
+      <p class="subtitle">{{ page.subtitle }}</p>
       {% endif %}
     </header>
 
@@ -15,4 +17,5 @@
     {% include footer.html %}
   </div>
 </body>
+
 </html>
