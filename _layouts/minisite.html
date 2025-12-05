@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'en' }}">
 
-{% include header.html %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    {% if page.title %}
+      {{ page.title }} · {{ site.title }}
+    {% else %}
+      {{ site.title }}
+    {% endif %}
+  </title>
+
+  <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
+
+  {% include analytics.html %}
+</head>
 
 <body>
   <div class="container">
