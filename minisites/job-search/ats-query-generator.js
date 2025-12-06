@@ -310,5 +310,7 @@ function testQuery() {
 }
 
 // Inicializar
-initializeATSPlatforms();
-resetForm();
+document.addEventListener('DOMContentLoaded', function () {
+    initializeATSPlatforms();
+    resetForm();
+});
