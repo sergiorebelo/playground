@@ -94,13 +94,6 @@ header h1,
    Cards and pannels
    =========================== */
 
-.card,
-.panel {
-    background: white;
-    border-radius: var(--radius-lg); 
-    box-shadow: var(--shadow-soft);
-}
-
 /* Grid */
 
 .tools-grid {
@@ -110,7 +103,11 @@ header h1,
     margin-top: 30px;
 }
 
+.card, 
 .panel {
+    background: white;
+    border-radius: var(--radius-lg); 
+    box-shadow: var(--shadow-soft);
     display: flex;
     flex-direction: column;
     overflow: hidden;
