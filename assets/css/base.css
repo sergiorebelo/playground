@@ -431,6 +431,7 @@ textarea#generated-query {
 .generator {
     text-align: center;
     margin-bottom: 22px;
+    width: 100%
 }
 
 .ditado-display {
@@ -541,6 +542,11 @@ button,
     justify-content: center;
     gap: 6px;
 
+}
+
+.share-buttons .btn {
+    flex: 1;
+    min-width: 160px;
 }
 
 .btn {

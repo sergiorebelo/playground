@@ -119,7 +119,7 @@ function generateSelectionOfWords() {
 
 
 /**
- * Generates a new ditado
+ * Generates a new ditado from a selection of words
  * 
  * @param {} selectionOfWords 
  * @returns 
@@ -128,26 +128,19 @@ function getDitadoFromSelectionOfWords(selectionOfWords) {
 
     // Recuperar palavras
     const animal = selectionOfWords.genero === 'F'
-        ? palavras.animaisF[selecoes.animalIdx]
-        : palavras.animaisM[selecoes.animalIdx];
-        
-    const adjetivo = selecoes.genero === 'F'
-        ? palavras.adjetivosF[selecoes.adjetivoIdx]
-        : palavras.adjetivosM[selecoes.adjetivoIdx];        
-    const negacao = palavras.negações[selecoes.negacaoIdx];
-    
-    let verbo;
-    if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
-        verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
-    }
-
-
-    else {        verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
-    }           
+        ? palavras.animaisF[selectionOfWords.animalIdx]
+        : palavras.animaisM[selectionOfWords.animalIdx];
+    const adjetivo = selectionOfWords.genero === 'F'
+        ? palavras.adjetivosF[selectionOfWords.adjetivoIdx]
+        : palavras.adjetivosM[selectionOfWords.adjetivoIdx];
+    const negacao = palavras.negações[selectionOfWords.negacaoIdx];
+    const verbo = (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em')
+        ? palavras.verbosInfinitivo[selectionOfWords.verboIdx]
+        : palavras.verbosPresente[selectionOfWords.verboIdx];
     const lugar = palavras.lugares[selecoes.lugarIdx];
 
     return `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
-}       
+}
 
 
 /** 
@@ -164,38 +157,16 @@ function gerarDitado(selectionOfWords = null) {
 
     const saying = getDitadoFromSelectionOfWords(selectionOfWords);
 
-    // Recuperar palavras
-    const animal = selecoes.genero === 'F'
-        ? palavras.animaisF[selecoes.animalIdx]
-        : palavras.animaisM[selecoes.animalIdx];
-
-    const adjetivo = selecoes.genero === 'F'
-        ? palavras.adjetivosF[selecoes.adjetivoIdx]
-        : palavras.adjetivosM[selecoes.adjetivoIdx];
-
-    const negacao = palavras.negações[selecoes.negacaoIdx];
-
-    let verbo;
-    if (negacao === 'não pode' || negacao === 'não deve' || negacao === 'nem pensar em') {
-        verbo = palavras.verbosInfinitivo[selecoes.verboIdx % palavras.verbosInfinitivo.length];
-    } else {
-        verbo = palavras.verbosPresente[selecoes.verboIdx % palavras.verbosPresente.length];
-    }
-
-    const lugar = palavras.lugares[selecoes.lugarIdx];
-
-    ditadoAtual = `${animal} ${adjetivo} ${negacao} ${verbo} ${lugar}`;
-
     // Gerar URL diretamente (não mostrar código isolado)
     const novaUrl = gerarUrlComDitado(selecoes);
     codigoAtual = extrairCodigoDaUrl(novaUrl);
 
-    ditadoDisplay.textContent = ditadoAtual;
+    ditadoDisplay.textContent = saying;
+    adicionarAoHistorico(saying, novaUrl);
 
-    adicionarAoHistorico(ditadoAtual, novaUrl);
-
-    return { ditado: ditadoAtual, url: novaUrl, selecoes };
+    return { ditado: saying, url: novaUrl, selecoes };
 }
+
 
 // GERAR URL com código embutido
 function gerarUrlComDitado(selecoes) {
