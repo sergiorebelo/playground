@@ -1,0 +1,257 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+     background: #000;
+     color: #fff;
+     min-height: 100vh;
+ }
+
+ .hero-section {
+     border-bottom: 4px solid #fff;
+     padding: 4rem 2rem;
+ }
+
+ .container {
+     max-width: 1280px;
+     margin: 0 auto;
+ }
+
+ .title-box {
+     border: 4px solid #fff;
+     padding: 2.5rem;
+     background: #fff;
+     color: #000;
+     display: inline-block;
+     margin-bottom: 2rem;
+ }
+
+ .title-box h1 {
+     font-size: 6rem;
+     font-weight: 900;
+     text-transform: uppercase;
+     letter-spacing: -0.05em;
+     line-height: 1;
+ }
+
+ .hero-grid {
+     display: grid;
+     grid-template-columns: 1fr;
+     gap: 2rem;
+     align-items: end;
+ }
+
+ .hero-description {
+     font-size: 1.5rem;
+     text-transform: uppercase;
+     border-left: 4px solid #fff;
+     padding-left: 1.5rem;
+     line-height: 1.3;
+ }
+
+
+ .minisites-section {
+     padding: 4rem 2rem;
+ }
+
+ .minisite-item {
+     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+     padding: 3rem 0;
+     text-decoration: none;
+     color: #fff;
+     display: block;
+     transition: border-color 0.3s;
+ }
+
+ .minisite-item:hover {
+     border-bottom-color: #fff;
+ }
+
+ .minisite-grid {
+     display: grid;
+     grid-template-columns: 1fr;
+     gap: 1.5rem;
+     align-items: center;
+ }
+
+ .minisite-content {
+     display: flex;
+     flex-direction: column;
+ }
+
+
+ .minisite-number {
+     font-size: 5rem;
+     font-weight: 900;
+     font-variant-numeric: tabular-nums;
+     transition: color 0.3s;
+     line-height: 1;
+ }
+
+ .minisite-title {
+     font-size: 3rem;
+     font-weight: 900;
+     text-transform: uppercase;
+     letter-spacing: -0.02em;
+     transition: transform 0.3s;
+     line-height: 1.1;
+ }
+
+ .minisite-item:hover .minisite-title {
+     transform: translateX(8px);
+ }
+
+ .minisite-description {
+     font-size: 1.25rem;
+     color: rgba(255, 255, 255, 0.7);
+     transition: color 0.3s;
+     line-height: 1.4;
+     margin-bottom: 1rem;
+ }
+
+ .minisite-item:hover .minisite-description {
+     color: #fff;
+ }
+
+ .tech-tags {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 0.5rem;
+ }
+
+ .tech-tag {
+     border: 1px solid rgba(255, 255, 255, 0.4);
+     padding: 0.25rem 0.75rem;
+     font-size: 0.875rem;
+     text-transform: uppercase;
+     letter-spacing: 0.05em;
+ }
+
+ .minisite-arrow {
+     border: 2px solid #fff;
+     padding: 1rem;
+     width: 64px;
+     height: 64px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.3s;
+     margin-left: auto;
+ }
+
+ .minisite-item:hover .minisite-arrow {
+     transform: rotate(45deg);
+     background: #fff;
+ }
+
+ .minisite-item:hover .minisite-arrow svg {
+     stroke: #000;
+ }
+
+ .hover-bar {
+     height: 4px;
+     width: 100%;
+     opacity: 0;
+     transition: opacity 0.3s;
+ }
+
+ .minisite-item:hover .hover-bar {
+     opacity: 1;
+ }
+
+ footer {
+     border-top: 4px solid #fff;
+     padding: 3rem 2rem;
+ }
+
+ .footer-content {
+     display: flex;
+     flex-direction: column;
+     gap: 1.5rem;
+ }
+
+ .footer-left {
+     text-transform: uppercase;
+     font-size: 1.25rem;
+     letter-spacing: 0.05em;
+ }
+
+ .footer-left a{
+    color: #fff;
+    text-decoration: none;
+ }
+
+ .footer-left a:hover {
+     text-decoration: underline;
+ }
+
+ .footer-links {
+     display: flex;
+     gap: 2rem;
+     text-transform: uppercase;
+     font-size: 1.125rem;
+ }
+
+ .footer-links a {
+     color: #fff;
+     text-decoration: none;
+ }
+
+ .footer-links a:hover {
+     text-decoration: underline;
+ }
+
+ @media (min-width: 768px) {
+     .hero-section {
+         padding: 4rem;
+     }
+
+     .title-box h1 {
+         font-size: 8rem;
+     }
+
+     .hero-grid {
+         grid-template-columns: 1fr 1fr;
+     }
+
+     .hero-description {
+         font-size: 1.875rem;
+     }
+
+     .minisites-section {
+         padding: 4rem;
+     }
+
+     .minisite-grid {
+         grid-template-columns: auto 1fr auto auto;
+         gap: 2rem;
+     }
+
+     .minisite-number {
+         font-size: 6rem;
+     }
+
+     .minisite-title {
+         font-size: 3.75rem;
+     }
+
+     .footer-content {
+         flex-direction: row;
+         justify-content: space-between;
+         align-items: center;
+     }
+ }
+
+ @media (min-width: 1024px) {
+     .hero-section {
+         padding: 4rem;
+     }
+
+     .minisites-section {
+         padding: 4rem;
+     }
+ }

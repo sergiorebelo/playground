@@ -1,158 +1,144 @@
----
-layout: playground
-title: Playground
-homepage: true
-lang: en
-hero_title: "Sérgio Rebelo’s Playground"
-subtitle: "A small collection of experiments, tools and interactive mini apps."
-tagline: "Explore, click around, break things, learn something and have fun."
----
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="cards-grid">
-    <!-- Gerador de Queries ATS -->
-    <div class="card">
-        <div class="card-header">
-            <div class="card-icon">
-                <i>🔍</i>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playground - Experimental Minisites</title>
+    <link rel="stylesheet" href="assets/css/impact.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="title-box">
+                <h1>PLAYGROUND</h1>
             </div>
-            <h2 class="card-title">Gerador de Queries ATS
-                <span class="lang-badge lang-pt">PT</span>
-            </h2>
-            <p class="card-description">
-                Build search queries that make it easier to find relevant job postings across different
-                recruiting platforms.
-            </p>
-            <p class="info-area">
-                Interface in Portuguese. </br>Results work on international job boards.
-            </p>
-        </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>Search across multiple ATS job boards</li>
-                <li>Filters by location and job type</li>
-                <li>Platform specific query templates</li>
-                <li>Easy to use interface</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a href="minisites/job-search/ats-query-generator.html" class="btn btn-primary">Open ATS query generator</a>
-        </div>
-    </div>
-
-    <!-- Agenda de Eventos Tech -->
-    <div class="card coming-soon">
-        <div class="card-header">
-            <div class="card-icon">
-                <i>📅</i>
+            <div class="hero-grid">
+                <div>
+                    <p class="hero-description">
+                        A collection of experimental minisites, tools and interactive apps created by personal need or for learning and fun.
+                    </p>
+                </div>
             </div>
-            <h2 class="card-title">Tech Events
-                <span class="lang-badge lang-en">EN</span>
+        </div>
+    </section>
 
-            </h2>
-            <p class="card-description">Find information about the best Tech Events in Portugal and Europe.</p>
-            <p class="info-area">Interface in English.</p>
+    <!-- Minisites List -->
+    <section class="minisites-section">
+        <div class="container">
+            <div id="minisites-list"></div>
         </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>Conferences, Meetups, Hackatons and more</li>
-                <li>Search events by date, location or price</li>
-                <li>Curated selection of events</li>
-                <li>News, reviews and articles</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-        </div>
-    </div>
+    </section>
 
-    <!-- Gerador de Ditados -->
-    <div class="card coming-soon">
-        <div class="card-header">
-            <div class="card-icon">
-                <i>🧠</i>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                     <a href="http://sergiorebelo.org">Playground</a> by <a href="http://sergiorebelo.com">Sérgio Rebelo</a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">contact</a>
+                    
+                </div>
             </div>
-            <h2 class="card-title">Gerador de Ditados</h2>
-            <p class="card-description">Manage and share original and funny "Ditados". </p>
         </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>Original and funny "Ditados" generation based on a simple formula</li>
-                <li>Growing words list</li>
-                <li>Gender and verbs consistency</li>
-                <li>Share your creations with unique URLs</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-        </div>
-    </div>
+    </footer>
 
-    <!-- Color Palete Generator -->
-    <div class="card coming-soon">
-        <div class="card-header">
-            <div class="card-icon icon-calc">
-                <i>🎨</i>
-            </div>
-            <h2 class="card-title">Color Palette Generator</h2>
-            <p class="card-description">Create, try and export color palettes for your projects.</p>
-        </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>Generation of complementar palettes</li>
-                <li>Contrast and Accessibility analysis</li>
-                <li>Export in multiple formats</li>
-                <li>Library with popular palettes</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-        </div>
-    </div>
+    <script>
+        const minisites = [
+            {
+                id: 1,
+                title: "ATS_QUERY_GENERATOR",
+                description: "Build search queries that make it easier to find relevant job postings across different recruiting platforms.",
+                url: "minisites/ats-query-generator/index.html",
+                color: "#ffd600"
+            },
+            {
+                id: 2,
+                title: "TECH_EVENTS",
+                description: "Find the best Tech Events in Portugal and Europe. Conferences, Meetups, Hackathons and more.",
+                url: "minisites/tech-events/index.html",
+                color: "#00FF88"
+            },
+            {
+                id: 3,
+                title: "GERADOR_DITADOS",
+                description: "Manage and share original and funny Portuguese made-up Sayings. We call them \"Ditados\" an they are all animal-inspired.",
+                url: "minisites/gerador-ditados/index.html",
+                color: "#ff3366"
+            },
+            {
+                id: 4,
+                title: "TO_BE_ANNOUNCED",
+                description: "A minigame inspired by a portuguese book by Rui Zink. Coming Soon!",
+                url: "minisites/o-bom-fascista/index.html",
+                color: "#0088FF"
+            },
+            {
+                id: 5,
+                title: "COMING_SOON",
+                description: "lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                url: "#",
+                color: "#FF00FF"
+            }
+        ];
 
-    <!-- JSON validator -->
-    <div class="card coming-soon">
-        <div class="card-header">
-            <div class="card-icon icon-text">
-                <i>{} </i>
-            </div>
-            <h2 class="card-title">JSON validator and formatter</h2>
-            <p class="card-description">Evaluates, analises and formats data structures in JSON. </p>
-        </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>JSON sintax validation/li>
-                <li>Format and minifies</li>
-                <li>Analysis of data structures</li>
-                <li>Converts to other formats</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-        </div>
-    </div>
+        function renderMinisites() {
+            const container = document.getElementById('minisites-list');
 
-    <!-- API Request Builder-->
-    <div class="card coming-soon">
-        <div class="card-header">
-            <div class="card-icon icon-text">
-                <i>🌐</i>
-            </div>
-            <h2 class="card-title">API Request Builder</h2>
-            <p class="card-description">HTTP Client to test your API</p>
-        </div>
-        <div class="card-body">
-            <ul class="card-features">
-                <li>Supports all REST interfaces</li>
-                <li>Data Privacy </li>
-                <li>Local history</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a class="btn btn-secondary" style="background: var(--gray);">Coming soon</a>
-        </div>
-    </div>
-</div>
+            minisites.forEach((site, index) => {
+                const item = document.createElement('a');
+                item.href = site.url;
+                item.className = 'minisite-item';
 
-<!-- Scripts -->
+                const number = String(index + 1).padStart(2, '0');
 
-<script src="assets/js/tool-cards.js" defer></script>
+                item.innerHTML = `
+                    <div class="minisite-grid">
+                        <div class="minisite-number" data-color="${site.color}">${number}</div>
+                        <div class="minisite-content">
+                            <div class="minisite-title">${site.title}</div>
+                            <div>
+                                <p class="minisite-description">${site.description}</p>
+                              
+                            </div>
+                        </div>
+                        <div class="minisite-arrow" data-color="${site.color}">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="hover-bar" style="background-color: ${site.color}"></div>
+                `;
+
+                // Add hover effects
+                item.addEventListener('mouseenter', function () {
+                    const number = this.querySelector('.minisite-number');
+                    const arrow = this.querySelector('.minisite-arrow');
+                    number.style.color = site.color;
+                    arrow.style.backgroundColor = site.color;
+                });
+
+                item.addEventListener('mouseleave', function () {
+                    const number = this.querySelector('.minisite-number');
+                    const arrow = this.querySelector('.minisite-arrow');
+                    number.style.color = '#fff';
+                    arrow.style.backgroundColor = 'transparent';
+                });
+
+                container.appendChild(item);
+            });
+        }
+
+        renderMinisites();
+    </script>
+</body>
+
+</html>
