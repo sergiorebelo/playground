@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Ditados - Playground</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .header {
+            border-bottom: 4px solid #fff;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .app-container {
+            flex-direction: row;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: #000;
+            border: 3px solid #fff;
+            padding: 0.5rem 1rem 0.5rem 0;
+            background: #000;
+            color: #fff;
+        }
+
+        .logo a {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+            color: #fff;
+            border: 3px solid #fff;
+            padding: 0.5rem 1rem;
+            margin: 0 1rem 0 0;
+            background: #fff;
+            color: #000;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .main-section {
+            padding: 4rem 2rem;
+        }
+
+        .page-title {
+            border: 4px solid #fff;
+            padding: 1.5rem 2rem;
+            background: #fff;
+            color: #000;
+            display: inline-block;
+            margin-bottom: 3rem;
+        }
+
+        .page-title h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        .hero-description {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            border-left: 4px solid #ff3366;
+            padding-left: 1.5rem;
+            line-height: 1.3;
+            margin: 0 0 3rem 0;
+            color: #ff3366
+        }
+
+
+
+        .generator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .select-all {
+            display: flex;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            margin-bottom: 0rem;
+            font-size: 1rem;
+        }
+
+        .select-all .btn {
+            font-size: 1rem;
+            margin: 0;
+            padding: 0.25rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: #FFF;
+        }
+
+
+        .btn {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: #fff;
+            color: #000;
+            border: 4px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .btn:hover {
+            background: #ff3366;
+            border-color: #ff3366;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .form-group {
+            border: 2px solid #fff;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .location-hint {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            text-transform: none;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            font-family: inherit;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        select:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff3366;
+
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #000;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            text-transform: none;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: #ff3366;
+            color: #000;
+            border: 4px solid #ff3366;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary:hover {
+            background: #000;
+            border-color: #ff3366;
+            color: #ff3366
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .output-section {
+            display: none;
+            margin-top: 3rem;
+        }
+
+        .output-section.active {
+            display: block;
+        }
+
+        .query-display {
+            border: 4px solid #ff3366;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .query-text {
+            font-family: 'Courier New', monospace;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            word-break: break-word;
+            color: #ff3366;
+            background: #000;
+            width: 100%;
+            min-height: 275px;
+        }
+
+        .query-stats {
+            margin-top: 1rem;
+            display: flex;
+            gap: 2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 1.25rem;
+            font-size: 1.125rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: 3px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .copy-btn {
+            background: #FF3366;
+            color: #fff;
+        }
+
+        .copy-btn:hover {
+            background: #fff;
+            color: #FF3366;
+        }
+
+        .test-btn {
+            background: #0088FF;
+            color: #fff;
+        }
+
+        .test-btn:hover {
+            background: #fff;
+            color: #0088FF;
+        }
+
+        .copy-btn.copied {
+            background: #ff3366;
+            color: #000;
+        }
+
+
+        .preview p {
+            font-size: 1.5rem;
+            border-left: 4px solid #fff;
+            padding-left: 1.5rem;
+            line-height: 1.3;
+            margin: 0 0 3rem 0;
+        }
+
+        .preview h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0;
+
+        }
+
+        .about-section {
+            padding: 10rem 0 0 0;
+            max-width: 70%;
+        }
+
+        .about-section p {
+            font-size: 1.5rem;
+            border-left: 4px solid #fff;
+            padding-left: 1.5rem;
+            line-height: 1.3;
+            margin: 0 0 3rem 0;
+        }
+
+        .result-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        footer {
+            border-top: 4px solid #fff;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-left {
+            text-transform: uppercase;
+            font-size: 1.25rem;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-content a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            text-transform: uppercase;
+            font-size: 1.125rem;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            .checkbox-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+        }
+
+        @media (min-width: 1024px) {
+            .generator-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 763px) {
+            .logo {
+                font-size: 1rem;
+            }
+
+            .logo a {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <p class="logo">
+                    <a href="http://sergiorebelo.org">PLAYGROUND</a>Gerador de Ditados
+                </p>
+                <nav class="nav">
+                    <a href="#about">Sobre</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <section class="main-section">
+        <div class="container">
+
+
+            <p class="hero-description">
+                Gerador de ditados é uma ferramenta para criar, gerir e partilhar ditados originais e engraçados em
+                português.
+            </p>
+
+
+
+
+
+
+            <!-- FAQ-->
+            <div anchor="about" class="about-section" id="about" style="margin-top: 4rem;">
+
+                <p>
+                    Gerador de Ditados é uma ferramenta interativa que permite aos utilizadores criar, gerir e partilhar
+                    ditados originais e engraçados em português.
+                </p>
+                <p>
+                    Foi inspirado num reel da Esther e utiliza a fórmula sugerida para criar ditados populares
+                    divertidos, originais e surpreendentes com animais. </p>
+                <p>
+                    Tem como base uma lista sempre crescente de palavras e tenta manter a concordância de géneros e
+                    verbos. </p>
+                <p>
+                    É também disponibilizado um sistema de códigos únicos para cada ditado, facilitando a partilha e
+                    descoberta de novos ditados criativos.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <a href="http://sergiorebelo.org">Playground</a> by <a href="http://sergiorebelo.com">Sérgio
+                        Rebelo</a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">contact</a>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="ats-query-generator.js"></script>
+
+</body>
+
+</html>
