@@ -174,7 +174,7 @@ function addToHistory(ditado, url) {
     };
 
     historyOfDitados.unshift(item);
-    if (historyOfDitados.length > 5) historyOfDitados.pop();
+    if (historyOfDitados.length > 15) historyOfDitados.pop();
 
     saveHistoryToLocal();
     updateHistory();
@@ -210,19 +210,16 @@ function loadHistoryFromLocal() {
 //
 function updateHistory() {
     historyList.innerHTML = historyOfDitados.map((item, index) => `
-        <div class="history-item">
-            <div>
-                <strong>${historyOfDitados.length - index}.</strong> ${item.ditado}
-                <div class="history-meta">
-                    ${item.timestamp}
-                </div>
-            </div>
-            <div>
-                <button class="btn btn-secondary" data-url="${item.url}">🔗 Copiar Link</button>
-            </div>
+        <div class="history-item" a href="${item.url}">
+            <strong class="history-number">${historyOfDitados.length - index}.</strong>
+            <div class="history-title">${item.ditado}</div>
+            <span class="history-button" min-width="250px" data-url="${item.url}">copiar link</span>
         </div>
+       <div class="hover-bar" style="background-color: #ff0000"></div>
+           
     `).join('');
 }
+
 
 // Status messages
 //

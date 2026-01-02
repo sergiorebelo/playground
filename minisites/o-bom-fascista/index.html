@@ -445,6 +445,23 @@
             text-decoration: underline;
         }
 
+
+        #game {
+            border: 3px solid #4a4a4a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        }
+
+        .instructions {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 18px;
+            z-index: 100;
+        }
+
         @media (min-width: 768px) {
             .checkbox-grid {
                 grid-template-columns: 1fr 1fr;
@@ -482,6 +499,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -508,13 +526,20 @@
                 This will be the home of a new game inspired by "O Bom Fascista" book by the Portuguese author Rui Zink.
             </p>
 
+            <!-- Game Container -->
+           <div id="game"></div>
+    <div class="instructions">
+        Use LEFT/RIGHT to move, SPACE to jump
+    </div>
             <p class="hero-description">
-                In the meanwhile, click on the book cover to buy it and read more about this amazing satirical book!    
+                In the meanwhile, click on the book cover to buy it and read more about this amazing satirical book!
             </p>
 
 
-            <a href="https://www.bertrand.pt/livro/manual-do-bom-fascista-rui-zink/23030315" target="_blank" rel="noopener noreferrer">
-                <img src="manual_do_bom_fascista_cover.jpg" alt="Manual do Bom Fascista book cover" style="max-height: 80kev; border: 4px solid #fff;">
+            <a href="https://www.bertrand.pt/livro/manual-do-bom-fascista-rui-zink/23030315" target="_blank"
+                rel="noopener noreferrer">
+                <img src="manual_do_bom_fascista_cover.jpg" alt="Manual do Bom Fascista book cover"
+                    style="max-height: 80kev; border: 4px solid #fff;">
             </a>
 
 
@@ -522,10 +547,16 @@
             <div anchor="about" class="about-section" id="about" style="margin-top: 4rem;">
 
                 <p>
-                    "Manual do Bom Fascista" is a satirical book by Rui Zink that humorously explores the rise of fascism in Portugal through this guide on "How to be a good fascist". Rui Zink's sharp wit and keen observations make this book a compelling read for those interested in political satire and contemporary Portuguese literature.
+                    "Manual do Bom Fascista" is a satirical book by Rui Zink that humorously explores the rise of
+                    fascism in Portugal through this guide on "How to be a good fascist". Rui Zink's sharp wit and keen
+                    observations make this book a compelling read for those interested in political satire and
+                    contemporary Portuguese literature.
                 </p>
                 <p>
-                    The book delves into the characteristics, behaviors, and ideologies associated with fascism, presenting them in a satirical manner that encourages readers to reflect on the political climate and societal issues. Through humor and irony, Rui Zink sheds light on the dangers of authoritarianism and the importance of vigilance in preserving democratic values.
+                    The book delves into the characteristics, behaviors, and ideologies associated with fascism,
+                    presenting them in a satirical manner that encourages readers to reflect on the political climate
+                    and societal issues. Through humor and irony, Rui Zink sheds light on the dangers of
+                    authoritarianism and the importance of vigilance in preserving democratic values.
                 </p>
             </div>
         </div>
@@ -547,9 +578,211 @@
             </div>
         </div>
     </footer>
+<script src="https://kaboomjs.com/lib/0.7.1/kaboom.js"></script>
+    <script>
+        // Initialize Kaboom
+        kaboom({
+            global: true,
+            width: 1024,
+            height: 576,
+            canvas: document.getElementById("game"),
+            background: [10, 10, 40],
+            scale: 1,
+            crisp: true,
+            debug: false,
+        });
 
-    <script src="ats-query-generator.js"></script>
+        // First, let's create a simple working version
+        scene("main", () => {
+            // Create a simple background
+            add([
+                rect(width(), height()),
+                color(10, 10, 40),
+                pos(0, 0),
+                layer("bg"),
+                "background"
+            ]);
 
+            // Create ground
+            add([
+                rect(width() * 3, 100),
+                color(40, 40, 40),
+                pos(0, height() - 100),
+                area(),
+                body({ isStatic: true }),
+                "ground"
+            ]);
+
+            // Add some street lines
+            for (let i = 0; i < 15; i++) {
+                add([
+                    rect(80, 5),
+                    color(255, 255, 100),
+                    pos(i * 200, height() - 50),
+                    "ground"
+                ]);
+            }
+
+            // Create simple buildings
+            for (let i = 0; i < 10; i++) {
+                const buildingHeight = 150 + Math.random() * 200;
+                add([
+                    rect(120, buildingHeight),
+                    color(30, 30, 50),
+                    pos(i * 250, height() - 100 - buildingHeight),
+                    "background"
+                ]);
+
+                // Add windows
+                for (let w = 0; w < 3; w++) {
+                    for (let h = 0; h < 4; h++) {
+                        if (Math.random() > 0.5) {
+                            add([
+                                rect(20, 25),
+                                color(255, 200, 100),
+                                pos(i * 250 + 20 + w * 35, height() - 100 - buildingHeight + 20 + h * 35),
+                                "background"
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            // Create player - using Kaboom's built-in bean sprite
+            const player = add([
+                sprite("bean"),  // Kaboom's built-in character
+                pos(200, 300),
+                area(),
+                body(),
+                {
+                    speed: 300,
+                    jumpForce: 500,
+                    direction: "right",
+                },
+                "player"
+            ]);
+
+            // Add some platforms
+            const platforms = [
+                { x: 400, y: 400, w: 200, h: 20 },
+                { x: 700, y: 350, w: 150, h: 20 },
+                { x: 1000, y: 300, w: 200, h: 20 },
+            ];
+
+            platforms.forEach(plat => {
+                add([
+                    rect(plat.w, plat.h),
+                    pos(plat.x, plat.y),
+                    area(),
+                    body({ isStatic: true }),
+                    color(100, 100, 100),
+                    "platform"
+                ]);
+            });
+
+            // Controls
+            onKeyDown("left", () => {
+                player.move(-player.speed, 0);
+                player.flipX = true;
+            });
+
+            onKeyDown("right", () => {
+                player.move(player.speed, 0);
+                player.flipX = false;
+            });
+
+            onKeyPress("space", () => {
+                if (player.isGrounded()) {
+                    player.jump(player.jumpForce);
+                }
+            });
+
+            onKeyPress("up", () => {
+                if (player.isGrounded()) {
+                    player.jump(player.jumpForce);
+                }
+            });
+
+            // Camera follow
+            player.onUpdate(() => {
+                camPos(player.pos.x, height() / 2);
+            });
+
+            // Add a test NPC
+            const npc = add([
+                rect(40, 80),
+                pos(600, height() - 180),
+                color(0, 200, 100),
+                area(),
+                "npc"
+            ]);
+
+            // Add floating text
+            add([
+                text("Citizen", { size: 16 }),
+                pos(600, height() - 200),
+                color(255, 255, 255)
+            ]);
+
+            // Add some coins to collect
+            for (let i = 0; i < 10; i++) {
+                add([
+                    rect(20, 20),
+                    pos(300 + i * 100, 200 + Math.sin(i) * 50),
+                    color(255, 215, 0),
+                    area(),
+                    "coin"
+                ]);
+            }
+
+            // Coin collection
+            player.onCollide("coin", (coin) => {
+                destroy(coin);
+                add([
+                    text("+1", { size: 24 }),
+                    pos(coin.pos),
+                    color(255, 215, 0),
+                    lifespan(1, { fade: 0.5 })
+                ]);
+            });
+
+            // Debug boundary
+            onUpdate(() => {
+                if (player.pos.y > height() + 200) {
+                    player.pos = vec2(200, 300);
+                }
+            });
+        });
+
+        // Start screen
+        scene("start", () => {
+            add([
+                rect(width(), height()),
+                color(0, 0, 0)
+            ]);
+
+            add([
+                text("CITY ADVENTURE", { size: 48 }),
+                pos(width() / 2, height() / 3),
+                origin("center"),
+                color(100, 200, 255)
+            ]);
+
+            add([
+                text("Press SPACE to start", { size: 24 }),
+                pos(width() / 2, height() / 2),
+                origin("center"),
+                color(255, 255, 255)
+            ]);
+
+            onKeyPress("space", () => {
+                go("main");
+            });
+        });
+
+        // Start the game
+        start("start");
+    </script>
 </body>
 
 </html>

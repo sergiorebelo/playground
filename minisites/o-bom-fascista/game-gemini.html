@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Retro Portugal Scrollable</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        canvas {
+            border: 4px solid #fff;
+            background-color: #87CEEB;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- Adiciona estas variáveis no topo do script ---
+        let frameX = 0; // Qual o frame atual (0, 1, 2...)
+        let gameFrame = 0; // Contador de ciclos do jogo
+        const staggerFrames = 10; // Velocidade da animação (quanto maior, mais lento)
+        const spriteWidth = 64;  // Largura de cada quadrado na sheet
+        const spriteHeight = 64; // Altura de cada quadrado na sheet
+    let gameStarted = false; // evita múltiplos starts do loop
+
+        // Definições de ecrã retro
+        canvas.width = 400;
+        canvas.height = 240;
+
+        const player = {
+            x: 50,
+            y: 150,
+            width: 32,
+            height: 48,
+            speed: 2,
+            velX: 0,
+            velY: 0,
+            jumping: false,
+            grounded: false,
+            facing: 'right'
+        };
+
+        const keys = {};
+        const gravity = 0.3;
+        const friction = 0.8;
+
+        // Carregar a Sprite (Substitui pelo teu ficheiro)
+        // 1. Criamos o objeto de imagem na memória
+        const playerSprite = new Image();
+
+        // 2. Apontamos para o ficheiro real (garante que o nome e a extensão estão corretos)
+        // Se guardaste como "heroi.jpg", escreve "heroi.jpg". Se for "heroi.png", muda para .png
+        playerSprite.src = 'heroi.png';
+
+        // 3. (Opcional mas recomendado) Só inicia o jogo quando a imagem carregar
+        playerSprite.onload = () => {
+            console.log("A imagem do herói foi carregada com sucesso!");
+            if (!gameStarted) {
+                gameStarted = true;
+                update(); // Inicia o loop do jogo
+            }
+        };
+
+        playerSprite.onerror = () => {
+            console.error("Erro: Não consegui encontrar o ficheiro 'heroi.png'. Verifica se o nome está igual ao ficheiro na pasta.");
+            // Se a sprite não carregar, ainda assim iniciamos o jogo (desenha retângulo vermelho)
+            // Criar uma sprite placeholder em memória (spritesheet simples de 4 frames)
+            try {
+                const off = document.createElement('canvas');
+                off.width = spriteWidth * 4;
+                off.height = spriteHeight;
+                const octx = off.getContext('2d');
+                // desenhar 4 frames coloridos para visual feedback
+                const colors = ['#ff5050', '#50ff50', '#5050ff', '#ffff50'];
+                for (let f = 0; f < 4; f++) {
+                    octx.fillStyle = colors[f % colors.length];
+                    octx.fillRect(f * spriteWidth, 0, spriteWidth, spriteHeight);
+                    octx.fillStyle = '#000';
+                    octx.fillText(String(f + 1), f * spriteWidth + 8, 16);
+                }
+                // usar como source da imagem
+                playerSprite.src = off.toDataURL();
+                console.warn('Usando sprite placeholder embutida (data URL).');
+            } catch (e) {
+                console.warn('Não foi possível criar placeholder sprite:', e);
+            }
+
+            if (!gameStarted) {
+                gameStarted = true;
+                update();
+            }
+        };
+
+        // --- Adiciona isto ao início do teu <script> ---
+
+        const backgrounds = {
+            sky: { x: 0, speed: 0.2, color: '#87CEEB' },
+            houses: { x: 0, speed: 1.2 }, // As casas movem-se a 1.2x a velocidade do scroll
+            clouds: { x: 0, speed: 0.5 }
+        };
+
+        let scrollOffset = 0; // Distância total que o jogador percorreu
+
+        // --- Substitui a tua função draw() por esta ---
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Desenhar o Céu (Estático)
+            ctx.fillStyle = backgrounds.sky.color;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Desenhar Nuvens (Parallax Lento)
+            drawParallaxLayer(backgrounds.clouds.x, -20, 'cloud');
+
+            // 3. Desenhar Casas (Parallax Médio)
+            // Aqui podes usar a imagem das casas que gerei antes
+            drawParallaxLayer(backgrounds.houses.x, 40, 'house');
+
+            // 4. Desenhar Chão (Move-se com o jogador)
+            ctx.fillStyle = "#654321";
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+            // Adicionar detalhe de calçada portuguesa (simples)
+            ctx.strokeStyle = "#555";
+            for (let i = 0; i < canvas.width; i += 10) {
+                ctx.strokeRect(i - (scrollOffset % 10), canvas.height - 20, 10, 10);
+            }
+
+            // 5. Desenhar Personagem
+            drawPlayer();
+          /*  if (playerSprite.complete) {
+                // Se estivermos a andar para a esquerda, podemos inverter a sprite
+                ctx.save();
+                if (player.facing === 'left') {
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(playerSprite, -player.x - player.width, player.y, player.width, player.height);
+                } else {
+                    ctx.drawImage(playerSprite, player.x, player.y, player.width, player.height);
+                }
+                ctx.restore();
+            } else {
+                ctx.fillStyle = "red";
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+            }
+*/        }
+
+        function drawPlayer() {
+            // Lógica para animar: muda o frame a cada X ciclos do jogo
+            if (gameFrame % staggerFrames == 0) {
+                if (frameX < 3) frameX++; // Assume que tens 4 frames por linha
+                else frameX = 0;
+            }
+            gameFrame++;
+
+            ctx.save();
+
+            // Se a sprite ainda não estiver disponível, desenha um retângulo vermelho como fallback
+            if (!playerSprite.complete || playerSprite.naturalWidth === 0) {
+                ctx.fillStyle = "red";
+                if (player.facing === 'left') {
+                    // no flip necessário para o rect
+                    ctx.fillRect(player.x, player.y, player.width, player.height);
+                } else {
+                    ctx.fillRect(player.x, player.y, player.width, player.height);
+                }
+                ctx.restore();
+                return;
+            }
+
+            // Se estiver a andar para a esquerda, inverte
+            if (player.facing === 'left') {
+                ctx.scale(-1, 1);
+                ctx.drawImage(
+                    playerSprite,
+                    frameX * spriteWidth, 0, spriteWidth, spriteHeight, // Recorte (X, Y, W, H)
+                    -player.x - player.width, player.y, player.width, player.height // Posição no ecrã
+                );
+            } else {
+                ctx.drawImage(
+                    playerSprite,
+                    frameX * spriteWidth, 0, spriteWidth, spriteHeight,
+                    player.x, player.y, player.width, player.height
+                );
+            }
+
+            ctx.restore();
+        }
+
+        // Função auxiliar para repetir o fundo infinitamente
+        function drawParallaxLayer(offset, y, type) {
+            // Lógica simples para desenhar blocos repetidos
+            for (let i = -1; i < 5; i++) {
+                const speed = backgrounds[type === 'house' ? 'houses' : 'clouds'].speed;
+                let xPos = (i * 150) - ((scrollOffset * speed) % 150);
+
+                if (type === 'house') {
+                    ctx.fillStyle = "#3498db"; // Cor das casas azuis
+                    ctx.fillRect(xPos, canvas.height - 100, 80, 80);
+                    ctx.fillStyle = "white"; // Janelas
+                    ctx.fillRect(xPos + 10, canvas.height - 80, 20, 20);
+                } else {
+                    ctx.fillStyle = "white"; // Nuvens
+                    ctx.beginPath();
+                    ctx.arc(xPos, 50, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
+        // --- Atualiza a lógica de movimento no update() ---
+        // Em vez de mover o player.x infinitamente, movemos o scrollOffset:
+
+
+        function update() {
+            // Verificar Teclas
+            if (keys['ArrowUp'] || keys['w']) {
+                if (!player.jumping && player.grounded) {
+                    player.jumping = true;
+                    player.grounded = false;
+                    player.velY = -player.speed * 2.5;
+                }
+            }
+            if (keys['ArrowLeft'] || keys['a']) {
+                if (player.velX > -player.speed) player.velX--;
+                player.facing = 'left';
+            }
+            if (keys['ArrowRight'] || keys['d']) {
+                if (player.x < canvas.width / 2) {
+                    player.velX++;
+                } else {
+                    scrollOffset += player.speed; // O mundo move-se, não o boneco
+                }
+                player.facing = 'right';
+            }
+
+            // Física
+            player.velX *= friction;
+            player.velY += gravity;
+
+            player.x += player.velX;
+            player.y += player.velY;
+
+            // Colisão simples com o "chão"
+            if (player.y >= canvas.height - player.height - 20) {
+                player.y = canvas.height - player.height - 20;
+                player.jumping = false;
+                player.grounded = true;
+                player.velY = 0;
+            }
+
+            draw();
+            requestAnimationFrame(update);
+        }
+
+        // Event listeners
+        window.addEventListener("keydown", function (e) { keys[e.key] = true; });
+        window.addEventListener("keyup", function (e) { keys[e.key] = false; });
+
+    </script>
+</body>
+
+</html>
